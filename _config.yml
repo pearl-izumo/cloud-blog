@@ -4,3 +4,4 @@
 title: Cloud Blog Platform
 email: system@cloudblog.com
 description: クラウドブログ管理システム
+baseurl: "/cloud-blog" 
