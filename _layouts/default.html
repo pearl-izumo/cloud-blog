@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: site.blog_title }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 20px; }
+        header { background: #f4f4f4; padding: 10px 0; text-align: center; }
+        nav a { margin: 0 10px; text-decoration: none; color: #333; }
+        footer { text-align: center; padding: 10px 0; border-top: 1px solid #ccc; margin-top: 50px; }
+        .post-content { border-left: 3px solid #ccc; padding-left: 15px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><a href="{{ site.baseurl }}/">{{ site.blog_title }}</a></h1>
+        <nav>
+            <a href="{{ site.baseurl }}/">入口</a>
+            <a href="{{ site.baseurl }}/public/">公開記事</a>
+            <a href="{{ site.baseurl }}/private/">非公開エリア</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        {{ content }}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 {{ site.blog_title }}</p>
+    </footer>
+
+    <script>
+        // 🔑 グローバル変数定義: Liquid変数の安全な参照
+        const BASE_URL = "{{ site.baseurl | default: '' }}"; 
+        const PRIVATE_PATH = BASE_URL + "/private/";
+        
+        // 2段階パスワードを取得 (デフォルト値で安全化)
+        const CORRECT_PASSWORD_1 = "{{ site.private_list_password_1 | default: '' }}";
+        const CORRECT_PASSWORD_2 = "{{ site.private_list_password_2 | default: '' }}"; 
+
+
+        // 1. プレイヤーIDの生成と永続化 (コメントトリガー用)
+        function getPlayerId() {
+            let playerId = localStorage.getItem('arg_player_id');
+            if (!playerId) {
+                playerId = 'player-' + Math.random().toString(36).substring(2, 9);
+                localStorage.setItem('arg_player_id', playerId);
+            }
+            return playerId;
+        }
+
+        getPlayerId(); 
+
+
+        // 2. 汎用パスワード認証ロジック (2段階認証)
+        function authenticate() {
+            // フォームのHTMLを定義
+            const formHtml = `
+                <div id="auth-overlay" style="
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: rgba(0, 0, 0, 0.9); z-index: 10000; 
+                    display: flex; 
+                    justify-content: center; align-items: center; 
+                    flex-direction: column; color: white;
+                ">
+                    <h2>【二重認証が必要です】</h2>
+                    <p>非公開エリアへ入るための **合言葉** と **秘密の数字** を入力してください。</p>
+                    <form id="password-form" onsubmit="handleAuthSubmit(event)">
+                        <input type="text" id="auth-input-1" placeholder="合言葉 (例: AMANE-SECRET-KEY)" style="padding: 8px; margin: 5px; width: 250px;">
+                        <input type="text" id="auth-input-2" placeholder="秘密の数字 (例: CLOUD-HIDDEN-WORD)" style="padding: 8px; margin: 5px; width: 250px;">
+                        <button type="submit" style="padding: 8px 15px; margin-top: 10px;">認証を試みる</button>
+                    </form>
+                    <p style="margin-top: 20px;"><a href="${BASE_URL}/" style="color: #ccc;">[ ブログ入口に戻る ]</a></p>
+                    <p id="error-message" style="color: red; margin-top: 10px; display: none;">合言葉または秘密の数字が違います。</p>
+                </div>
+            `;
+
+            // フォームを body の先頭に挿入 (afterbegin)
+            document.body.insertAdjacentHTML('afterbegin', formHtml);
+            
+            // エラーを回避するため、要素が存在する場合にのみフォーカスを試みます
+            const input1 = document.getElementById('auth-input-1');
+            if (input1) {
+                 input1.focus(); 
+            }
+        }
+
+        // フォーム送信時の処理
+        function handleAuthSubmit(event) {
+            event.preventDefault(); 
+            
+            const input1 = document.getElementById('auth-input-1').value.trim();
+            const input2 = document.getElementById('auth-input-2').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (input1 === CORRECT_PASSWORD_1 && input2 === CORRECT_PASSWORD_2) {
+                // 認証成功
+                localStorage.setItem('isAuthenticated', 'true');
+                const overlay = document.getElementById('auth-overlay');
+                if (overlay) { overlay.remove(); }
+                
+                window.location.href = window.location.href; 
+            } else {
+                // 認証失敗
+                errorMessage.style.display = 'block';
+                document.getElementById('auth-input-1').value = ''; 
+                document.getElementById('auth-input-2').value = ''; 
+                document.getElementById('auth-input-1').focus();
+            }
+        }
+
+        // 3. アクセス制御の実行
+        function checkPrivateAccess() {
+            const currentPath = window.location.pathname;
+            
+            // 🔑 グローバル変数 PRIVATE_PATH を使用
+            const isPrivateArea = currentPath.startsWith(PRIVATE_PATH); 
+            const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
+            // 非公開エリアかつ未認証の場合
+            if (isPrivateArea && !isAuthenticated) {
+                
+                authenticate(); // フォームを表示
+
+                // 修正済み: bodyの構成要素を個別に非表示にする
+                document.body.style.display = 'block'; 
+                
+                const elementsToHide = ['header', '.container', 'footer'];
+                elementsToHide.forEach(selector => {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        element.style.display = 'none';
+                    }
+                });
+                
+            } else {
+                // 認証済みまたは公開エリアの場合
+                document.body.style.display = 'block'; 
+            }
+        }
+
+        // ページロード時に実行
+        checkPrivateAccess();
+
+    </script>
+
+</body>
+</html>

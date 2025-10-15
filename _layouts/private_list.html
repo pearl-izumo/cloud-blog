@@ -1,0 +1,30 @@
+---
+layout: default
+---
+{% comment %}
+    このレイアウトは default.html を継承し、非公開記事一覧を表示するテンプレートです。
+    パスワード認証は default.html が担当します。
+{% endcomment %}
+
+<h1>{{ page.title }}</h1>
+<p>ここは認証が成功したユーザーのみが閲覧できる、非公開記事の一覧ページです。</p>
+
+<h2>公開記事一覧</h2>
+<ul>
+    {% for post in site.amaneblog_public_posts reversed %}
+    <li>
+        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        <small>({{ post.date | date: "%Y-%m-%d" }})</small>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>非公開記事一覧</h2>
+<ul>
+    {% for post in site.amaneblog_private_posts reversed %}
+    <li>
+        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        <small>({{ post.date | date: "%Y-%m-%d" }})</small>
+    </li>
+    {% endfor %}
+</ul>

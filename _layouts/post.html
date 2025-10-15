@@ -1,0 +1,286 @@
+---
+layout: default
+---
+
+<article>
+    <div id="notification-container"></div>
+    <h1>{{ page.title }}</h1>
+    <p>投稿日: {{ page.date | date: "%Y年%m月%d日" }}</p>
+
+    <div class="post-content">
+        {{ content }}
+    </div>
+
+    <hr style="margin-top: 40px;">
+    
+    <section id="comment-section">
+        <h2>:: コメント / 記録 ::</h2>
+        
+        <div id="comment-form-area">
+            <p>システムを読み込み中...</p>
+        </div>
+        
+        <div id="comment-history-area">
+            <p style="color: #666;">（現時点で書き込まれた記録はありません。）</p>
+        </div>
+
+    </section>
+
+    <style>
+        /* 通知コンテナの基本スタイル */
+        #notification-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* 他の要素の上に表示 */
+            pointer-events: none; /* クリックを透過させる */
+        }
+    
+        /* 個別通知のスタイル */
+        .toast-notification {
+            background-color: #4CAF50; /* 緑色の背景 */
+            color: white;
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            
+            /* 画面外に隠すための初期位置 */
+            transform: translateY(-100%); 
+            transition: transform 0.5s ease-in-out; /* アニメーションの設定 */
+            
+            /* 中央寄せのための設定 */
+            margin: 0 auto;
+            max-width: 400px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+    
+        /* 表示時のスタイル */
+        .toast-notification.show {
+            transform: translateY(0); /* 画面内にスライドイン */
+        }
+    </style>
+
+</article>
+
+<script>
+    const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
+    const CURRENT_POST_SLUG = "{{ page.slug }}";
+    const ENABLE_COMMENT_TRIGGER = "{% if page.enable_comment_trigger %}true{% else %}false{% endif %}" === 'true';
+
+    // 🔑 ローカルストレージで使用するキーの定義
+    const FLAG_STATE_KEY = 'arg_flag_state';      // 状態: PENDING / COMPLETED
+    const COMMENT_CONTENT_KEY = 'arg_comment_content'; // プレイヤーのコメント内容
+    const TRIGGER_TIME_MS_KEY = 'arg_trigger_time_ms'; // 処理完了予定時刻 (UNIX時間)
+
+    // ---------------------------------------------------
+    // 🔑 コメントフォーム生成と表示
+    // ---------------------------------------------------
+    
+    function renderCommentForm() {
+        const formArea = document.getElementById('comment-form-area');
+        
+        // 1. トリガーが無効な記事ではフォームを表示しない
+        if (!ENABLE_COMMENT_TRIGGER) {
+            formArea.innerHTML = '<p style="color: #888;">（この記録はシステムによるロックアップ中です。）</p>';
+            return;
+        }
+
+        const currentState = localStorage.getItem(FLAG_STATE_KEY);
+
+        if (currentState === 'COMPLETED') {
+            // 2. 完了後の表示: 新しい記事が表示されたことを示唆
+            formArea.innerHTML = '<p style="display: none;" id="timer-status"></p> ';
+        } else if (currentState === 'PENDING') {
+            // 3. 処理中の表示: メッセージを完全に削除し、何も表示しない
+            formArea.innerHTML = `
+                <p style="display: none;" id="timer-status"></p> 
+            `;
+            // 裏でタイマー監視自体は継続させる（重要）
+            checkTriggerStatus(); 
+        } else {
+            // 4. 初期状態: フォームをレンダリング
+            const formHtml = `
+                <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+                    <p><strong>[ 投稿者: ${CURRENT_PLAYER_ID} ]</strong></p>
+                    <form id="comment-form" onsubmit="handleCommentSubmit(event)">
+                        <textarea id="comment-text" name="comment" rows="4" placeholder="記録を書き込む..." style="width: 98%; padding: 5px; margin-bottom: 10px;"></textarea>
+                        <button type="submit" style="padding: 8px 15px;">記録を送信</button>
+                        <p id="comment-message" style="color: green; margin-top: 10px; display: none;"></p>
+                    </form>
+                </div>
+            `;
+            formArea.innerHTML = formHtml;
+        }
+    }
+
+    // ---------------------------------------------------
+    // 🔑 フォーム送信イベント処理 (タイムスタンプ記録)
+    // ---------------------------------------------------
+    
+    function handleCommentSubmit(event) {
+        event.preventDefault(); 
+        
+        const commentText = document.getElementById('comment-text').value.trim();
+        const messageElement = document.getElementById('comment-message');
+        
+        if (commentText.length === 0) {
+            messageElement.textContent = "記録内容が空です。";
+            messageElement.style.color = 'red';
+            messageElement.style.display = 'block';
+            return;
+        }
+
+        // 1. 処理完了時刻を設定 (現在時刻 + 60秒)
+        const ONE_MINUTE_MS = 60 * 1000;
+        const triggerTime = Date.now() + ONE_MINUTE_MS; 
+        
+        // 2. Local Storageに状態を記録
+        localStorage.setItem(FLAG_STATE_KEY, 'PENDING');
+        localStorage.setItem(COMMENT_CONTENT_KEY, commentText);
+        localStorage.setItem(TRIGGER_TIME_MS_KEY, triggerTime.toString());
+        showNotification("コメントを送信しました。");
+        
+        // 3. プレイヤーへのフィードバックとリロード
+        messageElement.textContent = "";
+        messageElement.style.color = 'green';
+        messageElement.style.display = 'block';
+        
+        // ページの表示を更新し、PENDING状態のタイマーを表示させる
+        setTimeout(() => {
+            window.location.href = window.location.href; 
+        }, 1500);
+    }
+    
+    // ---------------------------------------------------
+    // 🔑 タイマー監視ロジック (完了チェック)
+    // ---------------------------------------------------
+    
+    function checkTriggerStatus() {
+        const statusElement = document.getElementById('timer-status');
+        const currentState = localStorage.getItem(FLAG_STATE_KEY);
+        const triggerTime = parseInt(localStorage.getItem(TRIGGER_TIME_MS_KEY), 10);
+
+        if (currentState !== 'PENDING' || !triggerTime) {
+            return;
+        }
+
+        console.log("--- Trigger System: PENDING ---");
+        
+        const updateTimer = () => {
+            const now = Date.now();
+            const remainingMs = triggerTime - now;
+
+            if (remainingMs <= 0) {
+                // 完了！状態をCOMPLETEDに更新し、リロード
+                localStorage.setItem(FLAG_STATE_KEY, 'COMPLETED');
+                clearInterval(timerInterval);
+                console.log("--- Trigger System: COMPLETED. Reloading... ---");
+                window.location.reload();
+                return;
+            }
+
+            // 残り時間を計算して表示
+            const remainingSeconds = Math.ceil(remainingMs / 1000);
+            console.log(`Remaining time: ${remainingSeconds} seconds.`);
+        };
+
+        // 1秒ごとにタイマーを更新
+        const timerInterval = setInterval(updateTimer, 10000);
+        updateTimer(); // 即座に実行
+    }
+
+
+    // ページロード時にフォームをレンダリング
+    document.addEventListener('DOMContentLoaded', renderCommentForm);
+
+    // ---------------------------------------------------
+    // 🔑 コンテンツ引用処理
+    // ---------------------------------------------------
+
+    function quoteCommentContent() {
+        // 引用したい要素を取得
+        const quoteElement = document.getElementById('quoted-comment-content');
+        
+        // コメント内容を取得
+        const savedComment = localStorage.getItem(COMMENT_CONTENT_KEY);
+
+        if (quoteElement && savedComment) {
+            // 要素があれば、localStorageのコメントで内容を置き換える
+            quoteElement.textContent = savedComment;
+        }
+    }
+
+    // ---------------------------------------------------
+    // 🔑 コメント履歴表示処理
+    // ---------------------------------------------------
+
+    function renderCommentHistory() {
+        const historyContainer = document.getElementById('comment-history-area');
+        const savedHistory = localStorage.getItem(COMMENT_CONTENT_KEY);
+        
+        const currentPostSlug = "{{ page.slug }}"; // Liquidの変数を使用
+        const triggerPostSlug = "amaneblog-trigger-test"; // 🔑 トリガー記事のスラッグに合わせる
+
+        // 履歴が保存されていなければ何もしない
+        if (!historyContainer || !savedHistory) {
+            return;
+        }
+        // 🔑 修正の核: 現在の記事がトリガー記事でない場合、履歴を表示しない
+        if (currentPostSlug !== triggerPostSlug) {
+            return;
+        }
+        
+        // 履歴HTMLを生成
+        const historyHtml = `
+            <div style="margin-top: 20px; padding: 10px; border-top: 1px solid #ddd;">
+                <p style="font-weight: bold; margin-bottom: 5px;">--- 記録履歴 ---</p>
+                <div style="border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 10px;">
+                    <p style="margin: 0;"><strong>[${CURRENT_PLAYER_ID}] </strong>${new Date().toLocaleString()}</p>
+                    <p style="white-space: pre-wrap; margin: 5px 0 0 0;">${savedHistory}</p>
+                </div>
+            </div>
+        `;
+        
+        historyContainer.innerHTML = historyHtml;
+    }
+
+    // ---------------------------------------------------
+    // 🔑 通知ポップアップ表示処理
+    // ---------------------------------------------------
+    function showNotification(message) {
+        const container = document.getElementById('notification-container');
+        if (!container) return;
+
+        // 1. 通知要素の生成
+        const notification = document.createElement('div');
+        notification.className = 'toast-notification';
+        notification.textContent = message;
+
+        // 2. コンテナに追加
+        container.appendChild(notification);
+        
+        // 3. アニメーション: わずかに遅延させてクラスを追加し、スライドインさせる
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10); 
+
+        // 4. 自動で消去: 3秒後にスライドアウトし、DOMから削除する
+        setTimeout(() => {
+            notification.classList.remove('show'); // スライドアウト開始
+            
+            // アニメーション完了後（0.5秒後）に要素をDOMから削除
+            setTimeout(() => {
+                notification.remove(); 
+            }, 500); 
+            
+        }, 3000); // 3秒間表示
+    }
+
+    // ページロード時に実行されるように追加
+    document.addEventListener('DOMContentLoaded', renderCommentForm);
+    document.addEventListener('DOMContentLoaded', quoteCommentContent);
+    document.addEventListener('DOMContentLoaded', renderCommentHistory); // 👈 この行を追加
+
+</script>
