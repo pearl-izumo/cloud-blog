@@ -1,39 +1,35 @@
 <div class="posts-list">
     <h1>{{ page.title }}</h1>
     
-    {% comment %} 
-        page.status_to_show が正しく設定されない問題を回避するため、
-        ページURLから現在のリストが公開リストか非公開リストかを判定する。
-        例: /private/index.html 
-    {% endcomment %}
-    {% assign is_private_list = page.url | split: '/' | join: ' ' | contains: 'private' %}
+    {% comment %} 🔑 修正の核: ページフロントマターからリストタイプを取得 {% endcomment %}
+    {% assign current_list_type = page.list_type %}
 
     <ul>
         {% for post in site.posts reversed %}
             
-            {% comment %} 🔑 フィルタリングの核: リスト種別と記事statusを比較 {% endcomment %}
+            {% assign post_status = post.status %}
+            {% assign should_display = false %}
 
             {% comment %} (1) 隠し記事は常に除外 {% endcomment %}
             {% if post.exclude_from_list %}
                 {% continue %}
             {% endif %}
 
-            {% comment %} (2) 記事が公開(public)の場合 {% endcomment %}
-            {% if post.status == 'public' %}
-                {% comment %} 公開リスト、非公開リストどちらでも表示する（非公開エリアで公開記事を見せるため） {% endcomment %}
-                {% assign should_display = true %}
+            {% comment %} 🔑 判定ロジック {% endcomment %}
             
-            {% comment %} (3) 記事が非公開(private)の場合 {% endcomment %}
-            {% elsif post.status == 'private' %}
-                {% comment %} 現在のページが非公開リストページでのみ表示 {% endcomment %}
-                {% if is_private_list %}
+            {% comment %} A. 現在のリストが「非公開 (private)」の場合 {% endcomment %}
+            {% if current_list_type == 'private' %}
+                {% comment %} 非公開リストでは、statusが'private'の記事のみを表示する（公開記事は表示しない） {% endcomment %}
+                {% if post_status == 'private' %}
                     {% assign should_display = true %}
-                {% else %}
-                    {% assign should_display = false %}
                 {% endif %}
-            
+
+            {% comment %} B. 現在のリストが「公開 (public)」または未定義の場合 {% endcomment %}
             {% else %}
-                {% assign should_display = false %}
+                {% comment %} 公開リストでは、statusが'public'の記事のみを表示する {% endcomment %}
+                {% if post_status == 'public' %}
+                    {% assign should_display = true %}
+                {% endif %}
             {% endif %}
 
             {% if should_display %}
@@ -47,6 +43,10 @@
             
         {% endfor %}
     </ul>
+    
+    {% if page.list_type == 'private' %}
+        <p>※このリストは認証済みユーザーのみに表示されます。</p>
+    {% endif %}
 </div>
 
 
