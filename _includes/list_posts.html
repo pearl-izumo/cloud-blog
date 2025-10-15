@@ -6,19 +6,30 @@
 
     <ul>
         {% for post in site.posts reversed %}
-            {% if post.blog == blog_id %}
-                {% if post.status == status_filter %}
-                    {% if post.exclude_from_list %}
-                        {% continue %}
-                    {% endif %}
-                    <li>
-                        <a href="{{ site.baseurl }}{{ post.url }}">
-                            {{ post.title }}
-                        </a>
-                        <small>({{ post.date | date: "%Y-%m-%d" }})</small>
-                    </li>
-                {% endif %}
+            
+            {% comment %} 
+                🔑 修正の核: blog_id と status_filter のチェックを一時的に無効化
+                これにより、Jekyllはすべての記事をリストアップしようとします。
+            {% endcomment %}
+
+            {% if post.exclude_from_list %}
+                {% continue %}
             {% endif %}
+
+            {% comment %} 
+            {% if post.blog == blog_id %} 
+                {% if post.status == status_filter %} 
+            {% endif %} 
+            {% endif %}
+            {% endcomment %}
+
+            <li>
+                <a href="{{ site.baseurl }}{{ post.url }}">
+                    {{ post.title }}
+                </a>
+                <small>({{ post.date | date: "%Y-%m-%d" }})</small>
+            </li>
+            
         {% endfor %}
     </ul>
 

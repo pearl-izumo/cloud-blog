@@ -38,8 +38,10 @@
         const PRIVATE_PATH = BASE_URL + "/private/";
         
         // 2段階パスワードを取得 (デフォルト値で安全化)
-        const CORRECT_PASSWORD_1 = "{{ site.private_list_password_1 | default: '' }}";
-        const CORRECT_PASSWORD_2 = "{{ site.private_list_password_2 | default: '' }}"; 
+        //const CORRECT_PASSWORD_1 = "{{ site.private_list_password_1 | default: '' }}";
+        //const CORRECT_PASSWORD_2 = "{{ site.private_list_password_2 | default: '' }}";
+        const CORRECT_PASSWORD_1 = "1st";
+        const CORRECT_PASSWORD_2 = "2nd";
 
 
         // 1. プレイヤーIDの生成と永続化 (コメントトリガー用)
