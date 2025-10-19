@@ -1,8 +1,10 @@
 <div class="posts-list">
     <h1>{{ page.title }}</h1>
     
-    {% comment %} 🔑 修正の核: ページフロントマターからリストタイプを取得 {% endcomment %}
+    {% comment %} ページフロントマターからリストタイプを取得 {% endcomment %}
     {% assign current_list_type = page.list_type %}
+    {% comment %} リストページのブログIDを取得する行を追加 {% endcomment %}
+    {% assign current_blog_id = page.blog_id %}
 
     <ul>
         {% for post in site.posts reversed %}
@@ -15,22 +17,27 @@
                 {% continue %}
             {% endif %}
 
-            {% comment %} 🔑 判定ロジック {% endcomment %}
-            
-            {% comment %} A. 現在のリストが「非公開 (private)」の場合 {% endcomment %}
-            {% if current_list_type == 'private' %}
-                {% comment %} 非公開リストでは、statusが'private'の記事のみを表示する（公開記事は表示しない） {% endcomment %}
-                {% if post_status == 'private' %}
-                    {% assign should_display = true %}
-                {% endif %}
+            {% comment %} post.blog が current_blog_id と一致するかをチェック {% endcomment %}
+            {% if post.blog == current_blog_id %}
 
-            {% comment %} B. 現在のリストが「公開 (public)」または未定義の場合 {% endcomment %}
-            {% else %}
-                {% comment %} 公開リストでは、statusが'public'の記事のみを表示する {% endcomment %}
-                {% if post_status == 'public' %}
-                    {% assign should_display = true %}
+                {% comment %} 🔑 判定ロジック {% endcomment %}
+                
+                {% comment %} A. 現在のリストが「非公開 (private)」の場合 {% endcomment %}
+                {% if current_list_type == 'private' %}
+                    {% comment %} 非公開リストでは、statusが'private'の記事のみを表示する（公開記事は表示しない） {% endcomment %}
+                    {% if post_status == 'private' %}
+                        {% assign should_display = true %}
+                    {% endif %}
+
+                {% comment %} B. 現在のリストが「公開 (public)」または未定義の場合 {% endcomment %}
+                {% else %}
+                    {% comment %} 公開リストでは、statusが'public'の記事のみを表示する {% endcomment %}
+                    {% if post_status == 'public' %}
+                        {% assign should_display = true %}
+                    {% endif %}
                 {% endif %}
             {% endif %}
+            {% comment %} post.blog が current_blog_id と一致しない場合は should_display は false のまま {% endcomment %}
 
             {% if should_display %}
                 <li>

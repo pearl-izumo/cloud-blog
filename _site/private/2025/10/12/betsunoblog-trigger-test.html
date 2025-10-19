@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[システムログ] 記録処理結果の報告</title>
+    <title>コメントトリガー記事 - 独白</title>
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -19,38 +19,13 @@
     <div class="main-container">
         <article>
     <div id="notification-container"></div>
-    <h1>[システムログ] 記録処理結果の報告</h1>
-    <p>投稿日: 2025年10月13日</p>
+    <h1>コメントトリガー記事 - 独白</h1>
+    <p>投稿日: 2025年10月12日</p>
 
     <div class="post-content">
-        <h2 id="報告日時-2025-10-13-100000">報告日時: 2025-10-13 10:00:00</h2>
+        <p>この記事にコメントすると、アマネからの反応が時間差で表示されます。</p>
 
-<h3 id="処理結果概要">処理結果概要</h3>
-
-<p>プレイヤー <strong>プレイヤー</strong> によってトリガーされた非同期処理が完了しました。</p>
-
-<p><strong>[ 処理ログ詳細 ]</strong></p>
-
-<hr />
-
-<p><strong>[ プレイヤーが入力した記録 (コメント) ]</strong></p>
-
-<div style="border: 2px solid #333; padding: 15px; margin: 15px 0; background: #eee;">
-    <p>引用コメント: <span id="quoted-comment-content" style="font-weight: bold; color: #b00;">読み込み中...</span></p>
-</div>
-
-<hr />
-
-<p><strong>[ 次のステップへのヒント ]</strong></p>
-
-<p>現在、新たなアクセスコードがシステムに一時的に生成されました。以下のパスワードを使用して、別の非公開エリアにアクセスしてください。</p>
-
-<p>アクセスコード: <code class="language-plaintext highlighter-rouge">CLOUD-CODE-789</code>
-エリア名: <code class="language-plaintext highlighter-rouge">/amaneblog/classified/</code></p>
-
-<hr />
-
-<p style="text-align: right; color: #888;">システム管理者</p>
+<p>【注意】 このファイルには、次のステップでコメントトリガーのJavaScriptロジックが追加されます。</p>
 
     </div>
 
@@ -109,8 +84,8 @@
 
 <script>
     const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
-    const CURRENT_POST_SLUG = "system-response-log";
-    const ENABLE_COMMENT_TRIGGER = "false" === 'true';
+    const CURRENT_POST_SLUG = "betsunoblog-trigger-test";
+    const ENABLE_COMMENT_TRIGGER = "true" === 'true';
 
     // 🔑 ローカルストレージで使用するキーの定義
     const FLAG_STATE_KEY = 'arg_flag_state';      // 状態: PENDING / COMPLETED
@@ -263,7 +238,7 @@
         const historyContainer = document.getElementById('comment-history-area');
         const savedHistory = localStorage.getItem(COMMENT_CONTENT_KEY);
         
-        const currentPostSlug = "system-response-log"; // Liquidの変数を使用
+        const currentPostSlug = "betsunoblog-trigger-test"; // Liquidの変数を使用
         const triggerPostSlug = "amaneblog-trigger-test"; // 🔑 トリガー記事のスラッグに合わせる
 
         // 履歴が保存されていなければ何もしない

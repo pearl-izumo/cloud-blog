@@ -4,32 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title | default: site.blog_title }}</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; }
-        .container { max-width: 800px; margin: 20px auto; padding: 0 20px; }
-        header { background: #f4f4f4; padding: 10px 0; text-align: center; }
-        nav a { margin: 0 10px; text-decoration: none; color: #333; }
-        footer { text-align: center; padding: 10px 0; border-top: 1px solid #ccc; margin-top: 50px; }
-        .post-content { border-left: 3px solid #ccc; padding-left: 15px; margin-top: 20px; }
-    </style>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/style.css">
 </head>
 <body>
 
     <header>
-        <h1><a href="{{ site.baseurl }}/">{{ site.blog_title }}</a></h1>
-        <nav>
-            <a href="{{ site.baseurl }}/">入口</a>
-            <a href="{{ site.baseurl }}/public/">公開記事</a>
-            <a href="{{ site.baseurl }}/private/">非公開エリア</a>
-        </nav>
+        <div class="header-content">
+            <a href="{{ site.baseurl }}/" class="logo-link">
+                <img src="{{ site.baseurl }}/assets/cloudblog_logo.png" alt="CLOUDBLOGロゴ" class="header-logo">
+            </a>
+        </div>
     </header>
 
-    <div class="container">
+    <div class="main-container">
         {{ content }}
     </div>
 
     <footer>
-        <p>&copy; 2025 {{ site.blog_title }}</p>
+        <p class="footer-note">
+            このWebサイトの内容はフィクションであり、<br>
+            実在の人物・団体とは一切関係ありません。
+        </p>
+        <p class="footer-copyright">&copy; 出雲（@pearl_izumo）</p>
     </footer>
 
     <script>

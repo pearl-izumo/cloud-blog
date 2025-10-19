@@ -4,27 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>非公開記事一覧 (要認証)</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; }
-        .container { max-width: 800px; margin: 20px auto; padding: 0 20px; }
-        header { background: #f4f4f4; padding: 10px 0; text-align: center; }
-        nav a { margin: 0 10px; text-decoration: none; color: #333; }
-        footer { text-align: center; padding: 10px 0; border-top: 1px solid #ccc; margin-top: 50px; }
-        .post-content { border-left: 3px solid #ccc; padding-left: 15px; margin-top: 20px; }
-    </style>
+    <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 
     <header>
-        <h1><a href="/amaneblog/">アマネの記録</a></h1>
-        <nav>
-            <a href="/amaneblog/">入口</a>
-            <a href="/amaneblog/public/">公開記事</a>
-            <a href="/amaneblog/private/">非公開エリア</a>
-        </nav>
+        <div class="header-content">
+            <a href="/" class="logo-link">
+                <img src="/assets/cloudblog_logo.png" alt="CLOUDBLOGロゴ" class="header-logo">
+            </a>
+        </div>
     </header>
 
-    <div class="container">
+    <div class="main-container">
         <h2>【非公開エリア】アクセス認証済み</h2>
 
 <p>認証されたプレイヤーのみが閲覧できる記録のリストです。ここには、システムによって隠されている機密性の高いログが含まれる場合があります。</p>
@@ -36,43 +28,104 @@
     
     
     
+    
+    
 
     <ul>
         
             
-                
-                    
-                    <li>
-                        <a href="/amaneblog/private/2025/10/01/amaneblog-welcome-private.html">
-                            非公開テスト記事 - 認証確認
-                        </a>
-                        <small>(2025-10-01)</small>
-                    </li>
-                
             
-        
             
-                
-            
-        
-            
-                
-                    
-                    <li>
-                        <a href="/amaneblog/private/2025/10/12/amaneblog-trigger-test.html">
-                            コメントトリガー記事 - 独白
-                        </a>
-                        <small>(2025-10-12)</small>
-                    </li>
-                
-            
-        
-            
-                
-                    
-                        
-    </ul>
 
+            
+            
+
+            
+            
+            
+
+            
+                <li>
+                    <a href="/private/2025/10/01/amaneblog-welcome-private.html">
+                        非公開テスト記事 - 認証確認
+                    </a>
+                    <small>(2025-10-01)</small>
+                </li>
+            
+            
+        
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+            
+        
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+            
+        
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+                <li>
+                    <a href="/private/2025/10/12/amaneblog-trigger-test.html">
+                        コメントトリガー記事 - 独白
+                    </a>
+                    <small>(2025-10-12)</small>
+                </li>
+            
+            
+        
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+            
+        
+            
+            
+            
+
+            
+            
+                
+    </ul>
+    
     
         <p>※このリストは認証済みユーザーのみに表示されます。</p>
     
@@ -86,7 +139,7 @@
     // 🔑 ローカルストレージキーの定義
     const LIST_FLAG_KEY = 'arg_flag_state'; 
     const LIST_CURRENT_STATE = localStorage.getItem(LIST_FLAG_KEY);
-    const LIST_BASE_URL = "/amaneblog"; 
+    const LIST_BASE_URL = ""; 
     
     // 🔑 隠し記事の情報を定義 (Liquid変数とは異なるJS変数として定義)
     const HIDDEN_POST_URL = LIST_BASE_URL + '/private/2025/10/13/system-response-log.html';
@@ -132,17 +185,23 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 アマネの記録</p>
+        <p class="footer-note">
+            このWebサイトの内容はフィクションであり、<br>
+            実在の人物・団体とは一切関係ありません。
+        </p>
+        <p class="footer-copyright">&copy; 出雲（@pearl_izumo）</p>
     </footer>
 
     <script>
         // 🔑 グローバル変数定義: Liquid変数の安全な参照
-        const BASE_URL = "/amaneblog"; 
+        const BASE_URL = ""; 
         const PRIVATE_PATH = BASE_URL + "/private/";
         
         // 2段階パスワードを取得 (デフォルト値で安全化)
-        const CORRECT_PASSWORD_1 = "AMANE-SECRET-KEY";
-        const CORRECT_PASSWORD_2 = "CLOUD-HIDDEN-WORD"; 
+        //const CORRECT_PASSWORD_1 = "AMANE-SECRET-KEY";
+        //const CORRECT_PASSWORD_2 = "CLOUD-HIDDEN-WORD";
+        const CORRECT_PASSWORD_1 = "1st";
+        const CORRECT_PASSWORD_2 = "2nd";
 
 
         // 1. プレイヤーIDの生成と永続化 (コメントトリガー用)
