@@ -139,13 +139,16 @@
 </div>
 
 <script>
+    const CURRENT_BLOG_ID = "amaneblog";
+    const CURRENT_LIST_TYPE = "private";
+
     // 🔑 ローカルストレージキーの定義
-    const LIST_FLAG_KEY = 'arg_flag_state'; 
+    const LIST_FLAG_KEY = `${CURRENT_BLOG_ID}_${CURRENT_LIST_TYPE}_flag_state`;; 
     const LIST_CURRENT_STATE = localStorage.getItem(LIST_FLAG_KEY);
     const LIST_BASE_URL = ""; 
     
     // 🔑 隠し記事の情報を定義 (Liquid変数とは異なるJS変数として定義)
-    const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/2025/10/13/system-response-log/'
+    const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/2025/10/13/system-response-log'
     const HIDDEN_POST_TITLE = "[システムログ] 記録処理結果の報告";
     const HIDDEN_POST_DATE = "2025-10-13"; 
 

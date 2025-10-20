@@ -18,8 +18,11 @@ list_type: private
 </div>
 
 <script>
+    const CURRENT_BLOG_ID = "{{ page.blog_id }}";
+    const CURRENT_LIST_TYPE = "{{ page.list_type }}";
+
     // 🔑 ローカルストレージキーの定義
-    const LIST_FLAG_KEY = 'arg_flag_state'; 
+    const LIST_FLAG_KEY = `${CURRENT_BLOG_ID}_${CURRENT_LIST_TYPE}_flag_state`;; 
     const LIST_CURRENT_STATE = localStorage.getItem(LIST_FLAG_KEY);
     const LIST_BASE_URL = "{{ site.baseurl | default: '' }}"; 
     
