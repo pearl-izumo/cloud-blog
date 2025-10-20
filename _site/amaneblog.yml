@@ -1,0 +1,9 @@
+# _blogs/amaneblog.yml
+# -----------------------------------------------------------
+# 登場人物ごとの固有設定
+# -----------------------------------------------------------
+blog_id: amaneblog
+baseurl: /amaneblog
+blog_title: アマネの記録
+private_list_password_1: "AMANE-SECRET-KEY"  # 1つ目のパスワード
+private_list_password_2: "CLOUD-HIDDEN-WORD" # 🔑 2つ目のパスワードを追記

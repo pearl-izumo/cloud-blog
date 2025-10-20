@@ -5,3 +5,29 @@ title: Cloud Blog Platform
 email: system@cloudblog.com
 description: クラウドブログ管理システム
 baseurl: "/cloud-blog" 
+
+collections:
+  blogs:
+    output: true
+    permalink: /:name/
+defaults:
+  # amaneblog の公開リスト用
+  - scope:
+      path: "blogs/amaneblog/public/index.html"
+    values:
+      permalink: /amaneblog/public/
+  # amaneblog の非公開リスト用
+  - scope:
+      path: "blogs/amaneblog/private/index.html"
+    values:
+      permalink: /amaneblog/private/
+  # hokanoblog の公開リスト用
+  - scope:
+      path: "blogs/hokanoblog/public/index.html"
+    values:
+      permalink: /hokanoblog/public/
+  # hokanoblog の非公開リスト用
+  - scope:
+      path: "blogs/hokanoblog/private/index.html"
+    values:
+      permalink: /hokanoblog/private/

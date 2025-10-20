@@ -6,6 +6,9 @@
     {% comment %} リストページのブログIDを取得する行を追加 {% endcomment %}
     {% assign current_blog_id = page.blog_id %}
 
+    {% assign blog_path = page.blog_path %}
+    {% assign list_type = page.list_type %} 
+
     <ul>
         {% for post in site.posts reversed %}
             
@@ -40,12 +43,12 @@
             {% comment %} post.blog が current_blog_id と一致しない場合は should_display は false のまま {% endcomment %}
 
             {% if should_display %}
-                <li>
-                    <a href="{{ site.baseurl }}{{ post.url }}">
-                        {{ post.title }}
-                    </a>
-                    <small>({{ post.date | date: "%Y-%m-%d" }})</small>
-                </li>
+            <li>
+                <a href="{{ site.baseurl }}{{ post.url }}">
+                    {{ post.title }}
+                </a>
+                <small>({{ post.date | date: "%Y-%m-%d" }})</small>
+            </li>
             {% endif %}
             
         {% endfor %}

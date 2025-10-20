@@ -1,0 +1,66 @@
+---
+layout: default
+title: 非公開記事一覧 (要認証)
+blog_id: amaneblog
+blog_path: amaneblog
+list_type: private
+---
+<h2>【非公開エリア】アクセス認証済み</h2>
+
+<p>認証されたプレイヤーのみが閲覧できる記録のリストです。ここには、システムによって隠されている機密性の高いログが含まれる場合があります。</p>
+
+<div id="posts-list-container">
+    {% comment %} 
+        既存の記事リストをここにインクルード 
+        （隠し記事はビルドされますが、表示されるかどうかはJavaScriptで制御します）
+    {% endcomment %}
+    {% include list_posts.html %}
+</div>
+
+<script>
+    // 🔑 ローカルストレージキーの定義
+    const LIST_FLAG_KEY = 'arg_flag_state'; 
+    const LIST_CURRENT_STATE = localStorage.getItem(LIST_FLAG_KEY);
+    const LIST_BASE_URL = "{{ site.baseurl | default: '' }}"; 
+    
+    // 🔑 隠し記事の情報を定義 (Liquid変数とは異なるJS変数として定義)
+    const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/2025/10/13/system-response-log/'
+    const HIDDEN_POST_TITLE = "[システムログ] 記録処理結果の報告";
+    const HIDDEN_POST_DATE = "2025-10-13"; 
+
+    function checkAndDisplayHiddenPost() {
+        // 🔑 修正の核: 状態が COMPLETED の場合のみ、処理を実行
+        if (LIST_CURRENT_STATE === 'COMPLETED') { 
+            
+            // 既存のリスト（<ul>）要素を見つける
+            // Liquidが生成したリストの親要素（.posts-list）内の <ul> タグを探す
+            let targetList = document.querySelector('.posts-list ul');
+            
+            if (!targetList) {
+                // 挿入対象のリストが見つからなければ処理を終了
+                console.error("Target list (<ul>) not found for dynamic insertion.");
+                return;
+            }
+
+            // 🔑 挿入するHTMLをこのブロック内で生成
+            const hiddenPostHtml = `
+                <li style="list-style: none; margin-bottom: 10px;">
+                    <a href="${HIDDEN_POST_URL}" style="display: block; border: 2px solid green; padding: 10px; text-decoration: none; color: black; background-color: #f9fff9;">
+                        <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.1em; color: #1a5;">
+                            ${HIDDEN_POST_TITLE}
+                            <span style="font-size: 0.7em; margin-left: 10px; padding: 2px 6px; background: green; color: white; border-radius: 3px;">NEW LOG</span>
+                        </h3>
+                        <small style="color: #666;">({{ HIDDEN_POST_DATE }})</small>
+                    </a>
+                </li>
+            `;
+            
+            // 既存リストの先頭に挿入
+            targetList.insertAdjacentHTML('afterbegin', hiddenPostHtml);
+        }
+        // COMPLETED でなければ、何も表示しない（Liquidによって元々隠されているため）
+    }
+
+    // ページロード時に実行
+    document.addEventListener('DOMContentLoaded', checkAndDisplayHiddenPost);
+</script>
