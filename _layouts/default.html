@@ -31,7 +31,8 @@
     <script>
         // 🔑 グローバル変数定義: Liquid変数の安全な参照
         const BASE_URL = "{{ site.baseurl | default: '' }}"; 
-        const PRIVATE_PATH = BASE_URL + "/private/";
+        const CURRENT_BLOG_PATH = "{{ page.blog_path | default: 'amaneblog' }}"; // デフォルト値も設定
+        const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
         
         // 2段階パスワードを取得 (デフォルト値で安全化)
         //const CORRECT_PASSWORD_1 = "{{ site.private_list_password_1 | default: '' }}";
