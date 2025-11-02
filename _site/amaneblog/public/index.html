@@ -136,13 +136,24 @@
         const BASE_URL = ""; 
         const CURRENT_BLOG_PATH = "amaneblog"; // デフォルト値も設定
         const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
-        
-        // 2段階パスワードを取得 (デフォルト値で安全化)
-        //const CORRECT_PASSWORD_1 = "AMANE-SECRET-KEY";
-        //const CORRECT_PASSWORD_2 = "CLOUD-HIDDEN-WORD";
-        const CORRECT_PASSWORD_1 = "1st";
-        const CORRECT_PASSWORD_2 = "2nd";
+        const AUTH_FLAG_KEY = `isAuthenticated_${CURRENT_BLOG_PATH}`;
 
+        let CORRECT_PASSWORD_1;
+        let CORRECT_PASSWORD_2;
+
+        if (CURRENT_BLOG_PATH === 'amaneblog') {
+            // amaneblog のパスワード設定
+            CORRECT_PASSWORD_1 = "0324"; // ← パスワード1
+            CORRECT_PASSWORD_2 = "feelspecial"; // ← パスワード2
+        } else if (CURRENT_BLOG_PATH === 'hokanoblog') {
+            // hokanoblog のパスワード設定
+            CORRECT_PASSWORD_1 = "1st"; // ← 異なるパスワード1
+            CORRECT_PASSWORD_2 = "2nd"; // ← 異なるパスワード2
+        } else {
+            // 不明なブログの場合のデフォルト/安全な値
+            CORRECT_PASSWORD_1 = "DEFAULT_1";
+            CORRECT_PASSWORD_2 = "DEFAULT_2";
+        }
 
         // 1. プレイヤーIDの生成と永続化 (コメントトリガー用)
         function getPlayerId() {
@@ -200,7 +211,7 @@
 
             if (input1 === CORRECT_PASSWORD_1 && input2 === CORRECT_PASSWORD_2) {
                 // 認証成功
-                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem(AUTH_FLAG_KEY, 'true');
                 const overlay = document.getElementById('auth-overlay');
                 if (overlay) { overlay.remove(); }
                 
@@ -219,8 +230,8 @@
             const currentPath = window.location.pathname;
             
             // 🔑 グローバル変数 PRIVATE_PATH を使用
+            const isAuthenticated = localStorage.getItem(AUTH_FLAG_KEY) === 'true';
             const isPrivateArea = currentPath.startsWith(PRIVATE_PATH); 
-            const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
             // 非公開エリアかつ未認証の場合
             if (isPrivateArea && !isAuthenticated) {
