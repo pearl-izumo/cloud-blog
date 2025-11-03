@@ -153,16 +153,9 @@
     const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/2025/10/13/system-response-log'
     const HIDDEN_POST_TITLE = "[システムログ] 記録処理結果の報告";
 
-    // 現在の日付を YYYY-MM-DD 形式で取得する関数を追加
-    function getTodayDateFormatted() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
     // 表示用の日付を動的に設定
-    const HIDDEN_POST_DATE = getTodayDateFormatted();
+    const QUOTE_DATE_KEY = `trigger_date_${CURRENT_BLOG_ID}_${TRIGGER_POST_SLUG}`;
+    const HIDDEN_POST_DATE = localStorage.getItem(QUOTE_DATE_KEY) || '---';
     //const HIDDEN_POST_DATE = "2025-10-13";
 
     function checkAndDisplayHiddenPost() {
