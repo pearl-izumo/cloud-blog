@@ -14,8 +14,6 @@ list_type: private
 quote_source_slug: trigger-test
 ---
 
-## 報告日時: {{ page.date | date: "%Y-%m-%d %H:%M:%S" }}
-
 ### 処理結果概要
 
 プレイヤー **{{ site.private_player_name | default: 'プレイヤー' }}** によってトリガーされた非同期処理が完了しました。

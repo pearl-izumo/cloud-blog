@@ -20,7 +20,16 @@
         <article>
     <div id="notification-container"></div>
     <h1>公開テスト記事 - はじめまして</h1>
-    <p>投稿日: 2025年10月10日</p>
+
+    
+
+    
+
+    
+
+    
+        <p>投稿日: 2025年10月10日</p>
+    
 
     <div class="post-content">
         <p>これはアマネの公開記事のテストです。</p>
@@ -99,6 +108,13 @@
     const COMMENT_CONTENT_KEY = `comment_content_${BLOG_PATH}_${CURRENT_POST_SLUG}`; 
     // 例: 'trigger_time_ms_amaneblog_trigger-test'
     const TRIGGER_TIME_MS_KEY = `trigger_time_ms_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
+    // 日付保存用のキーを定義
+    const TRIGGER_DATE_KEY = `trigger_date_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
+
+    // 🔑 隠し記事のスラッグ判定用
+    const HIDDEN_POST_SLUGS = ["system-response-log"]; // 単一のスラッグに限定
+    const IS_HIDDEN_POST = HIDDEN_POST_SLUGS.includes(CURRENT_POST_SLUG);
+
     // ---------------------------------------------------
     // 🔑 コメントフォーム生成と表示
     // ---------------------------------------------------
@@ -166,6 +182,17 @@
         localStorage.setItem(COMMENT_CONTENT_KEY, commentText);
         localStorage.setItem(TRIGGER_TIME_MS_KEY, triggerTime.toString());
         showNotification("コメントを送信しました。");
+
+        if (!localStorage.getItem(TRIGGER_DATE_KEY)) {
+            // YYYY年MM月DD日 形式で日付を生成
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const dateToSave = `${year}年${month}月${day}日`;
+            
+            localStorage.setItem(TRIGGER_DATE_KEY, dateToSave);
+        }
         
         // 3. プレイヤーへのフィードバックとリロード
         messageElement.textContent = "";
@@ -296,10 +323,38 @@
         }, 3000); // 3秒間表示
     }
 
+    // 🎯 修正箇所 2: 引用元のトリガー記事の日付キーを再構築
+    const QUOTE_DATE_KEY = `trigger_date_${BLOG_PATH}_${QUOTE_SLUG}`;
+
+    function getDisplayDate() {
+        // 隠し記事の場合は、トリガー記事の日付をチェック
+        if (IS_HIDDEN_POST && QUOTE_SLUG) {
+            const savedDate = localStorage.getItem(QUOTE_DATE_KEY);
+            // 保存されていればその日付を返し、なければデフォルトを返す
+            return savedDate || '---'; 
+        }
+        return ''; // 非隠し記事の場合は日付表示処理を行わない
+    }
+
+    function renderDynamicDate() {
+        // 隠し記事の場合のみ実行
+        if (!IS_HIDDEN_POST) {
+            return; 
+        }
+        const dateElement = document.getElementById('dynamic-post-date');
+        const displayDate = getDisplayDate();
+
+        if (dateElement) {
+            //永続化された日付を表示
+            dateElement.textContent = `${displayDate}`;
+        }
+    }
+
     // ページロード時に実行されるように追加
     document.addEventListener('DOMContentLoaded', renderCommentForm);
     document.addEventListener('DOMContentLoaded', quoteCommentContent);
-    document.addEventListener('DOMContentLoaded', renderCommentHistory); // 👈 この行を追加
+    document.addEventListener('DOMContentLoaded', renderCommentHistory);
+    document.addEventListener('DOMContentLoaded', renderDynamicDate);// 👈 この行を追加
 
 </script>
     </div>
