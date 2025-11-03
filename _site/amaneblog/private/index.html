@@ -203,10 +203,11 @@
     <script>
         // 🔑 グローバル変数定義: Liquid変数の安全な参照
         const BASE_URL = ""; 
-        const CURRENT_BLOG_PATH = "xxxblog"; // デフォルト値も設定
+        const CURRENT_BLOG_PATH = "amaneblog"; // デフォルト値も設定
         console.log(CURRENT_BLOG_PATH)
         //window.CURRENT_BLOG_PATH = "amaneblog";
         const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
+        console.log(PRIVATE_PATH)
         const AUTH_FLAG_KEY = `isAuthenticated_${CURRENT_BLOG_PATH}`;
 
         let CORRECT_PASSWORD_1;

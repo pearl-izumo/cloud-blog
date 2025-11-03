@@ -71,6 +71,9 @@ layout: default
     const CURRENT_POST_SLUG = "{{ page.slug }}";
     const ENABLE_COMMENT_TRIGGER = "{% if page.enable_comment_trigger %}true{% else %}false{% endif %}" === 'true';
 
+    const QUOTE_SLUG = "{{ page.quote_source_slug }}";
+    const QUOTED_COMMENT_KEY = `comment_content_${BLOG_PATH}_${QUOTE_SLUG}`;
+
     // キーにブログIDとスラッグを含めることで、記事ごとに状態を分離
     // 例: 'trigger_state_amaneblog_trigger-test'
     const FLAG_STATE_KEY = `trigger_state_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
@@ -208,7 +211,7 @@ layout: default
         const quoteElement = document.getElementById('quoted-comment-content');
         
         // コメント内容を取得
-        const savedComment = localStorage.getItem(COMMENT_CONTENT_KEY);
+        const savedComment = localStorage.getItem(QUOTED_COMMENT_KEY);
 
         if (quoteElement && savedComment) {
             // 要素があれば、localStorageのコメントで内容を置き換える

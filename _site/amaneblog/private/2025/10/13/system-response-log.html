@@ -114,6 +114,9 @@
     const CURRENT_POST_SLUG = "system-response-log";
     const ENABLE_COMMENT_TRIGGER = "false" === 'true';
 
+    const QUOTE_SLUG = "trigger-test";
+    const QUOTED_COMMENT_KEY = `comment_content_${BLOG_PATH}_${QUOTE_SLUG}`;
+
     // キーにブログIDとスラッグを含めることで、記事ごとに状態を分離
     // 例: 'trigger_state_amaneblog_trigger-test'
     const FLAG_STATE_KEY = `trigger_state_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
@@ -251,7 +254,7 @@
         const quoteElement = document.getElementById('quoted-comment-content');
         
         // コメント内容を取得
-        const savedComment = localStorage.getItem(COMMENT_CONTENT_KEY);
+        const savedComment = localStorage.getItem(QUOTED_COMMENT_KEY);
 
         if (quoteElement && savedComment) {
             // 要素があれば、localStorageのコメントで内容を置き換える
@@ -341,6 +344,7 @@
         console.log(CURRENT_BLOG_PATH)
         //window.CURRENT_BLOG_PATH = "amaneblog";
         const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
+        console.log(PRIVATE_PATH)
         const AUTH_FLAG_KEY = `isAuthenticated_${CURRENT_BLOG_PATH}`;
 
         let CORRECT_PASSWORD_1;

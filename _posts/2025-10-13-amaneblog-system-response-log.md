@@ -11,6 +11,7 @@ slug: system-response-log
 exclude_from_list: true # 👈 プレイヤーがトリガー完了するまでリストから隠す
 blog_path: amaneblog
 list_type: private
+quote_source_slug: trigger-test
 ---
 
 ## 報告日時: {{ page.date | date: "%Y-%m-%d %H:%M:%S" }}
