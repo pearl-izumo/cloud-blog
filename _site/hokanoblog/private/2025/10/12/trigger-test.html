@@ -83,15 +83,19 @@
 </article>
 
 <script>
+    //const CURRENT_BLOG_PATH = "";
+    const BLOG_PATH = "hokanoblog"; // 安全のためデフォルト値を再設定
     const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
     const CURRENT_POST_SLUG = "trigger-test";
     const ENABLE_COMMENT_TRIGGER = "true" === 'true';
 
-    // 🔑 ローカルストレージで使用するキーの定義
-    const FLAG_STATE_KEY = 'amaneblog_private_flag_state';      // 状態: PENDING / COMPLETED
-    const COMMENT_CONTENT_KEY = 'arg_comment_content'; // プレイヤーのコメント内容
-    const TRIGGER_TIME_MS_KEY = 'arg_trigger_time_ms'; // 処理完了予定時刻 (UNIX時間)
-
+    // キーにブログIDとスラッグを含めることで、記事ごとに状態を分離
+    // 例: 'trigger_state_amaneblog_trigger-test'
+    const FLAG_STATE_KEY = `trigger_state_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
+    // 例: 'comment_content_amaneblog_trigger-test'
+    const COMMENT_CONTENT_KEY = `comment_content_${BLOG_PATH}_${CURRENT_POST_SLUG}`; 
+    // 例: 'trigger_time_ms_amaneblog_trigger-test'
+    const TRIGGER_TIME_MS_KEY = `trigger_time_ms_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
     // ---------------------------------------------------
     // 🔑 コメントフォーム生成と表示
     // ---------------------------------------------------
@@ -237,16 +241,9 @@
     function renderCommentHistory() {
         const historyContainer = document.getElementById('comment-history-area');
         const savedHistory = localStorage.getItem(COMMENT_CONTENT_KEY);
-        
-        const currentPostSlug = "trigger-test"; // Liquidの変数を使用
-        const triggerPostSlug = "trigger-test"; // 🔑 トリガー記事のスラッグに合わせる
 
         // 履歴が保存されていなければ何もしない
         if (!historyContainer || !savedHistory) {
-            return;
-        }
-        // 🔑 修正の核: 現在の記事がトリガー記事でない場合、履歴を表示しない
-        if (currentPostSlug !== triggerPostSlug) {
             return;
         }
         
@@ -315,7 +312,9 @@
     <script>
         // 🔑 グローバル変数定義: Liquid変数の安全な参照
         const BASE_URL = ""; 
-        const CURRENT_BLOG_PATH = "amaneblog"; // デフォルト値も設定
+        const CURRENT_BLOG_PATH = "hokanoblog"; // デフォルト値も設定
+        console.log(CURRENT_BLOG_PATH)
+        //window.CURRENT_BLOG_PATH = "amaneblog";
         const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
         const AUTH_FLAG_KEY = `isAuthenticated_${CURRENT_BLOG_PATH}`;
 
@@ -413,6 +412,7 @@
             // 🔑 グローバル変数 PRIVATE_PATH を使用
             const isAuthenticated = localStorage.getItem(AUTH_FLAG_KEY) === 'true';
             const isPrivateArea = currentPath.startsWith(PRIVATE_PATH); 
+
 
             // 非公開エリアかつ未認証の場合
             if (isPrivateArea && !isAuthenticated) {

@@ -65,15 +65,19 @@ layout: default
 </article>
 
 <script>
+    //const CURRENT_BLOG_PATH = "{{ page.blog_path }}";
+    const BLOG_PATH = "{{ page.blog | default: 'xxxblog' }}"; // 安全のためデフォルト値を再設定
     const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
     const CURRENT_POST_SLUG = "{{ page.slug }}";
     const ENABLE_COMMENT_TRIGGER = "{% if page.enable_comment_trigger %}true{% else %}false{% endif %}" === 'true';
 
-    // 🔑 ローカルストレージで使用するキーの定義
-    const FLAG_STATE_KEY = 'amaneblog_private_flag_state';      // 状態: PENDING / COMPLETED
-    const COMMENT_CONTENT_KEY = 'arg_comment_content'; // プレイヤーのコメント内容
-    const TRIGGER_TIME_MS_KEY = 'arg_trigger_time_ms'; // 処理完了予定時刻 (UNIX時間)
-
+    // キーにブログIDとスラッグを含めることで、記事ごとに状態を分離
+    // 例: 'trigger_state_amaneblog_trigger-test'
+    const FLAG_STATE_KEY = `trigger_state_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
+    // 例: 'comment_content_amaneblog_trigger-test'
+    const COMMENT_CONTENT_KEY = `comment_content_${BLOG_PATH}_${CURRENT_POST_SLUG}`; 
+    // 例: 'trigger_time_ms_amaneblog_trigger-test'
+    const TRIGGER_TIME_MS_KEY = `trigger_time_ms_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
     // ---------------------------------------------------
     // 🔑 コメントフォーム生成と表示
     // ---------------------------------------------------
@@ -219,16 +223,9 @@ layout: default
     function renderCommentHistory() {
         const historyContainer = document.getElementById('comment-history-area');
         const savedHistory = localStorage.getItem(COMMENT_CONTENT_KEY);
-        
-        const currentPostSlug = "{{ page.slug }}"; // Liquidの変数を使用
-        const triggerPostSlug = "trigger-test"; // 🔑 トリガー記事のスラッグに合わせる
 
         // 履歴が保存されていなければ何もしない
         if (!historyContainer || !savedHistory) {
-            return;
-        }
-        // 🔑 修正の核: 現在の記事がトリガー記事でない場合、履歴を表示しない
-        if (currentPostSlug !== triggerPostSlug) {
             return;
         }
         

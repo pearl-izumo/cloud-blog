@@ -44,7 +44,9 @@
     <script>
         // 🔑 グローバル変数定義: Liquid変数の安全な参照
         const BASE_URL = ""; 
-        const CURRENT_BLOG_PATH = "amaneblog"; // デフォルト値も設定
+        const CURRENT_BLOG_PATH = "xxxblog"; // デフォルト値も設定
+        console.log(CURRENT_BLOG_PATH)
+        //window.CURRENT_BLOG_PATH = "amaneblog";
         const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
         const AUTH_FLAG_KEY = `isAuthenticated_${CURRENT_BLOG_PATH}`;
 
@@ -142,6 +144,7 @@
             // 🔑 グローバル変数 PRIVATE_PATH を使用
             const isAuthenticated = localStorage.getItem(AUTH_FLAG_KEY) === 'true';
             const isPrivateArea = currentPath.startsWith(PRIVATE_PATH); 
+
 
             // 非公開エリアかつ未認証の場合
             if (isPrivateArea && !isAuthenticated) {
