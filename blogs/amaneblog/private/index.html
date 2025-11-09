@@ -1,14 +1,14 @@
 ---
 layout: default
-title: 非公開記事一覧 (要認証)
+title: 非公開記事一覧
 blog: amaneblog
 blog_id: amaneblog
 blog_path: amaneblog
 list_type: private
 ---
-<h2>【非公開エリア】アクセス認証済み</h2>
-
-<p>認証されたプレイヤーのみが閲覧できる記録のリストです。ここには、システムによって隠されている機密性の高いログが含まれる場合があります。</p>
+<h2>
+    <a href="{{ site.baseurl}}/amaneblog/" style="color: var(--color-meta)">雨の中のひとりごと</a>
+  </h2>
 
 <div id="posts-list-container">
     {% comment %} 
@@ -31,12 +31,13 @@ list_type: private
     // 🔑 隠し記事の情報を定義 (Liquid変数とは異なるJS変数として定義)
     const HIDDEN_POST_SLUG = "system-response-log";
     const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/2025/10/13/system-response-log'
-    const HIDDEN_POST_TITLE = "[システムログ] 記録処理結果の報告";
+    const HIDDEN_POST_TITLE = "コメントありがとうございます";
 
     // 表示用の日付を動的に設定
     const QUOTE_DATE_KEY = `trigger_date_${CURRENT_BLOG_ID}_${TRIGGER_POST_SLUG}`;
     const HIDDEN_POST_DATE = localStorage.getItem(QUOTE_DATE_KEY) || '---';
     //const HIDDEN_POST_DATE = "2025-10-13";
+    console.log(HIDDEN_POST_DATE)
 
     function checkAndDisplayHiddenPost() {
         // 🔑 修正の核: 状態が COMPLETED の場合のみ、処理を実行
@@ -54,13 +55,11 @@ list_type: private
 
             // 🔑 挿入するHTMLをこのブロック内で生成
             const hiddenPostHtml = `
-                <li style="list-style: none; margin-bottom: 10px;">
-                    <a href="${HIDDEN_POST_URL}" style="display: block; border: 2px solid green; padding: 10px; text-decoration: none; color: black; background-color: #f9fff9;">
-                        <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.1em; color: #1a5;">
-                            ${HIDDEN_POST_TITLE}
-                            <span style="font-size: 0.7em; margin-left: 10px; padding: 2px 6px; background: green; color: white; border-radius: 3px;">NEW LOG</span>
-                        </h3>
-                        <small style="color: #666;">(${HIDDEN_POST_DATE})</small>
+                <li class="hidden-post-item">
+                    <small style="color: var(--color-meta);">${HIDDEN_POST_DATE}</small>
+                    <a href="${HIDDEN_POST_URL}">
+                        ${HIDDEN_POST_TITLE}
+                        <span class="arg-marker">NEW</span>
                     </a>
                 </li>
             `;

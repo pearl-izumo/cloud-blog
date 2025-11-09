@@ -10,14 +10,19 @@
 
     <header>
         <div class="header-content">
-            <a href="/" class="logo-link">
+            <a class="logo-link">
                 <img src="/assets/cloudblog_logo.png" alt="CLOUDBLOGロゴ" class="header-logo">
             </a>
         </div>
     </header>
 
     <div class="main-container">
-        <div class="posts-list">
+        <h2>
+  <a href="/amaneblog/" style="color: var(--color-meta)">雨の中のひとりごと</a>
+</h2>
+
+<div id="posts-list-container">
+    <div class="posts-list">
     <h1>公開記事一覧</h1>
     
     
@@ -30,6 +35,13 @@
 
     <ul>
         
+            
+            
+            
+
+            
+            
+                
             
             
             
@@ -71,10 +83,10 @@
 
             
             <li>
+                <small>2025-10-10</small>
                 <a href="/amaneblog/public/2025/10/10/amaneblog-hello-world">
                     公開テスト記事 - はじめまして
                 </a>
-                <small>(2025-10-10)</small>
             </li>
             
             
@@ -107,20 +119,13 @@
             
             
         
-            
-            
-            
-
-            
-            
-                
     </ul>
-    
     
 </div>
 
 
 
+</div>
     </div>
 
     <footer>
@@ -128,35 +133,62 @@
             このWebサイトの内容はフィクションであり、<br>
             実在の人物・団体とは一切関係ありません。
         </p>
-        <p class="footer-copyright">&copy; 出雲（@pearl_izumo）</p>
+        <p class="footer-copyright">&copy; 2025 出雲（@pearl_izumo）</p>
     </footer>
 
     <script>
         // 🔑 グローバル変数定義: Liquid変数の安全な参照
         const BASE_URL = ""; 
         const CURRENT_BLOG_PATH = "amaneblog"; // デフォルト値も設定
-        console.log(CURRENT_BLOG_PATH)
         //window.CURRENT_BLOG_PATH = "amaneblog";
         const PRIVATE_PATH = BASE_URL + "/" + CURRENT_BLOG_PATH + "/private/";
-        console.log(PRIVATE_PATH)
+        console.log(PRIVATE_PATH);
         const AUTH_FLAG_KEY = `isAuthenticated_${CURRENT_BLOG_PATH}`;
 
-        let CORRECT_PASSWORD_1;
-        let CORRECT_PASSWORD_2;
+        const AUTH_SETTINGS = {
+            'amaneblog': {
+                // パスワード情報
+                password1: "MTk5NzAzMjQ=",
+                password2: "ZmVlbHNwZWNpYWw=",
+                // 質問情報
+                question1: '・私の推しの誕生日は？',
+                placeholder1: '西暦あり8桁',
+                inputType1: 'text',
+                question2: '・私の思い出の曲は？',
+                placeholder2: '英語小文字',
+                inputType2: 'text',
+            },
+            'hokanoblog': {
+                // パスワード情報
+                password1: "1st",
+                password2: "2nd",
+                // 質問情報
+                question1: '・私の誕生日は？',
+                placeholder1: '漢字3文字',
+                inputType1: 'number',
+                question2: '・秘密の合言葉は？',
+                placeholder2: '全て大文字',
+                inputType2: 'text', 
+            },
+            'default': {
+                // デフォルト情報 (パスワードと質問)
+                password1: "DEFAULT_1",
+                password2: "DEFAULT_2",
+                question1: '・認証コード 1/2',
+                placeholder1: 'コード1を入力',
+                inputType1: 'text',
+                question2: '・認証コード 2/2',
+                placeholder2: 'コード2を入力',
+                inputType2: 'text',
+            }
+        };
 
-        if (CURRENT_BLOG_PATH === 'amaneblog') {
-            // amaneblog のパスワード設定
-            CORRECT_PASSWORD_1 = "0324"; // ← パスワード1
-            CORRECT_PASSWORD_2 = "feelspecial"; // ← パスワード2
-        } else if (CURRENT_BLOG_PATH === 'hokanoblog') {
-            // hokanoblog のパスワード設定
-            CORRECT_PASSWORD_1 = "1st"; // ← 異なるパスワード1
-            CORRECT_PASSWORD_2 = "2nd"; // ← 異なるパスワード2
-        } else {
-            // 不明なブログの場合のデフォルト/安全な値
-            CORRECT_PASSWORD_1 = "DEFAULT_1";
-            CORRECT_PASSWORD_2 = "DEFAULT_2";
-        }
+        // 1. 認証に必要な設定を現在のブログパスから取得
+        const currentSettings = AUTH_SETTINGS[CURRENT_BLOG_PATH] || AUTH_SETTINGS.default;
+
+        // 2. 認証ロジックで使用するグローバル変数に代入
+        const CORRECT_PASSWORD_1 = currentSettings.password1; 
+        const CORRECT_PASSWORD_2 = currentSettings.password2;
 
         // 1. プレイヤーIDの生成と永続化 (コメントトリガー用)
         function getPlayerId() {
@@ -170,37 +202,51 @@
 
         getPlayerId(); 
 
+        // 難読化
+        function decodeBase64(encodedString) {
+            // JavaScript標準のatob関数を使用
+            return atob(encodedString); 
+        }
+
 
         // 2. 汎用パスワード認証ロジック (2段階認証)
         function authenticate() {
             // フォームのHTMLを定義
             const formHtml = `
-                <div id="auth-overlay" style="
-                    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-                    background: rgba(0, 0, 0, 0.9); z-index: 10000; 
-                    display: flex; 
-                    justify-content: center; align-items: center; 
-                    flex-direction: column; color: white;
-                ">
-                    <h2>【二重認証が必要です】</h2>
-                    <p>非公開エリアへ入るための **合言葉** と **秘密の数字** を入力してください。</p>
-                    <form id="password-form" onsubmit="handleAuthSubmit(event)">
-                        <input type="text" id="auth-input-1" placeholder="合言葉 (例: AMANE-SECRET-KEY)" style="padding: 8px; margin: 5px; width: 250px;">
-                        <input type="text" id="auth-input-2" placeholder="秘密の数字 (例: CLOUD-HIDDEN-WORD)" style="padding: 8px; margin: 5px; width: 250px;">
-                        <button type="submit" style="padding: 8px 15px; margin-top: 10px;">認証を試みる</button>
-                    </form>
-                    <p style="margin-top: 20px;"><a href="${BASE_URL}/" style="color: #ccc;">[ ブログ入口に戻る ]</a></p>
-                    <p id="error-message" style="color: red; margin-top: 10px; display: none;">合言葉または秘密の数字が違います。</p>
+                <div id="auth-overlay" style="display: flex;">
+                    <div id="auth-container">
+                        <h2>非公開エリア</h2>
+                        
+                        <form id="password-form" onsubmit="handleAuthSubmit(event)">
+                            <p>${currentSettings.question1}</p>
+                            <input type="${currentSettings.inputType1}" id="auth-input-1" placeholder="--${currentSettings.placeholder1}" required>
+                            <br>
+                            <p>${currentSettings.question2}</p>
+                            <input type="${currentSettings.inputType2}" id="auth-input-2" placeholder="--${currentSettings.placeholder2}" required>
+                            
+                            <button type="submit" id="auth-submit-button">ログイン</button>
+                        </form>
+                        
+                        <p id="auth-message" style="display: none;">回答が間違っています。</p>
+                        
+                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/" style="color: #666;">[ ブログ入口に戻る ]</a></p>
+                    </div>
                 </div>
             `;
 
             // フォームを body の先頭に挿入 (afterbegin)
-            document.body.insertAdjacentHTML('afterbegin', formHtml);
+            const headerElement = document.querySelector('header');
+            if (headerElement) {
+                headerElement.insertAdjacentHTML('afterend', formHtml);
+            } else {
+                // header が見つからなければ body の先頭にフォールバック
+                document.body.insertAdjacentHTML('afterbegin', formHtml);
+            }
             
             // エラーを回避するため、要素が存在する場合にのみフォーカスを試みます
             const input1 = document.getElementById('auth-input-1');
             if (input1) {
-                 input1.focus(); 
+                input1.focus(); 
             }
         }
 
@@ -210,9 +256,12 @@
             
             const input1 = document.getElementById('auth-input-1').value.trim();
             const input2 = document.getElementById('auth-input-2').value.trim();
-            const errorMessage = document.getElementById('error-message');
+            const errorMessage = document.getElementById('auth-message');
 
-            if (input1 === CORRECT_PASSWORD_1 && input2 === CORRECT_PASSWORD_2) {
+            const decodedPassword1 = decodeBase64(CORRECT_PASSWORD_1);
+            const decodedPassword2 = decodeBase64(CORRECT_PASSWORD_2);
+
+            if (input1 === decodedPassword1 && input2 === decodedPassword2) {
                 // 認証成功
                 localStorage.setItem(AUTH_FLAG_KEY, 'true');
                 const overlay = document.getElementById('auth-overlay');
@@ -241,17 +290,7 @@
             if (isPrivateArea && !isAuthenticated) {
                 
                 authenticate(); // フォームを表示
-
-                // 修正済み: bodyの構成要素を個別に非表示にする
-                document.body.style.display = 'block'; 
-                
-                const elementsToHide = ['header', '.container', 'footer'];
-                elementsToHide.forEach(selector => {
-                    const element = document.querySelector(selector);
-                    if (element) {
-                        element.style.display = 'none';
-                    }
-                });
+                const mainContent = document.querySelector('.main-container');
                 
             } else {
                 // 認証済みまたは公開エリアの場合

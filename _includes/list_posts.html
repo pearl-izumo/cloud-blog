@@ -10,7 +10,7 @@
     {% assign list_type = page.list_type %} 
 
     <ul>
-        {% for post in site.posts reversed %}
+        {% for post in site.posts %}
             
             {% assign post_status = post.status %}
             {% assign should_display = false %}
@@ -44,19 +44,16 @@
 
             {% if should_display %}
             <li>
+                <small>{{ post.date | date: "%Y-%m-%d" }}</small>
                 <a href="{{ site.baseurl }}{{ post.url }}">
                     {{ post.title }}
                 </a>
-                <small>({{ post.date | date: "%Y-%m-%d" }})</small>
             </li>
             {% endif %}
             
         {% endfor %}
     </ul>
     
-    {% if page.list_type == 'private' %}
-        <p>※このリストは認証済みユーザーのみに表示されます。</p>
-    {% endif %}
 </div>
 
 

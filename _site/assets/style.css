@@ -41,13 +41,15 @@ header {
 }
 /* ------------------------- コンテンツエリア ------------------------- */
 .main-container {
+    margin-top: 60px;
+    /* position: relative; */
     max-width: 600px; /* モバイルでは狭く、PCで最大幅を制御 */
     margin: 0 auto;
-    padding: 0 10px;
+    padding: 0 15px 20px 15px;
     background-color: var(--color-paper);
     box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    margin-top: 50px;
     /*min-height: 80vh; /* フッターのために最小高さを確保 */
-    padding: 20px 15px;
 }
 
 /* ------------------------- トップページ ------------------------- */
@@ -55,6 +57,7 @@ header {
     font-size: 1.8rem;
     color: var(--color-text);
     text-align: center;
+    padding-top: 20px;
     margin-top: 10px;
     margin-bottom: 30px;
 }
@@ -106,8 +109,277 @@ header {
     background-color: #f0f0f0;
 }
 
+/* ------------------------- ページ導入部の調整 ------------------------- */
+
+.main-container h2 {
+    font-size: 1.8rem;
+    color: var(--color-text);
+    border-bottom: 2px solid var(--color-border);
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.main-container p {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.posts-list h1 {
+    font-size: 1.2rem; 
+    text-align: center;
+    color: var(--color-text);
+    font-weight: bold;
+    margin-top: 0px; 
+    margin-bottom: 20px;
+    border-bottom: none; 
+    padding-bottom: 10px;
+}
+
+/* ------------------------- 記事一覧リスト ------------------------- */
+
+/* リスト全体のリセット */
+#posts-list-container ul {
+    list-style: none; /* 点や数字を削除 */
+    padding: 0;
+    margin: 0;
+}
+
+/* 個々の記事アイテム（li）をボックス化 */
+#posts-list-container li {
+    background-color: var(--color-paper); /* 白基調 */
+    border: none;
+    border-radius: 0;
+    padding: 15px 0;
+    margin-bottom: 0; /* アイテム間の余白 */
+    transition: box-shadow 0.2s;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* ホバー時の視覚的フィードバック */
+#posts-list-container li:hover {
+    background-color: rgba(0, 0, 0, 0.03); /* 薄いホバー背景を追加 */
+    box-shadow: none;
+    cursor: pointer;
+}
+
+/* 記事タイトル (aタグ) のスタイル */
+#posts-list-container li a {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--color-link); /* リンク色 */
+    text-decoration: none; /* 下線を削除 */
+    display: block; /* クリック領域を広く */
+    margin-bottom: 5px;
+}
+#posts-list-container li a:hover {
+    text-decoration: underline; /* ホバー時のみ下線 */
+}
+
+/* 記事のメタデータ（日付など） */
+.post-meta {
+    font-size: 0.85rem;
+    color: var(--color-meta); /* 灰色系の色 */
+    display: block;
+}
+
+/* ------------------------- 隠し記事の固有マーカー (ARG要素) ------------------------- */
+
+/* 隠し記事のリストアイテムのクラス（liに適用される） */
+
+/* NEW LOG のような目印のデザイン */
+.arg-marker {
+    float: none; 
+    display: inline-block;
+    font-size: 0.7em;
+    margin-left: 10px;
+    padding: 0px 6px;
+    background: green;
+    color: white;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+
+
+/* ------------------------- 個別記事コンテンツ ------------------------- */
+
+/* 見出しのスタイル */
+.post-content h1, .post-content h2, .post-content h3 {
+    color: var(--color-text);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    padding-bottom: 3px;
+}
+.post-content h2 {
+    font-size: 1.4rem;
+    border-bottom: 2px solid var(--color-border); /* はてなブログ風の水平線 */
+}
+.post-content h3 {
+    font-size: 1.2rem;
+    border-left: 5px solid var(--color-border); /* シンプルなサイドライン */
+    padding-left: 10px;
+}
+
+/* 引用ブロックのスタイル */
+.post-content blockquote {
+    background-color: #f5f5f5; /* 引用背景は薄いグレー */
+    border-left: 5px solid #cccccc;
+    padding: 10px 15px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #666;
+}
+
+/* リンク付き記事タイトルのデザイン（_layouts/post.html内） */
+article h1 {
+    font-size: 2.2rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+article p {
+    margin-bottom: 15px;
+}
+
+/* 投稿日のスタイル */
+article > p:first-of-type {
+    font-size: 0.9rem;
+    color: #888;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+/* ------------------------- コメント/トリガーエリア ------------------------- */
+
+/* コメントフォームとテキストエリアの基本デザイン */
+#comment-area, #timer-area {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid var(--color-border);
+}
+#comment-area textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: var(--font-family);
+    font-size: 16px;
+    resize: vertical; /* 縦方向のみリサイズ可能 */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* コメント送信ボタンのスタイル */
+#comment-area button {
+    background-color: var(--color-link);
+    color: var(--color-paper);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+#comment-area button:hover {
+    background-color: #0d4a99;
+}
+
+/* タイマー/ステータスの表示エリア */
+#timer-area {
+    background-color: #f0f0f0; /* タイマー背景も薄いグレーで統一 */
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+/* ------------------------- 認証エリア (ログイン画面風) ------------------------- */
+
+/* #auth-overlay: メインコンテナ内のみを覆うように変更 */
+#auth-overlay {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 🎯 修正: 背景を完全に不透明な白に設定し、別ページ感を出す */
+    background: var(--color-bg);
+    display: flex;
+    justify-content: center; /* 中央寄せ */
+    align-items: flex-start; /* 中央寄せ */
+    padding-top: 10px;
+    z-index: 900;
+    /* 初期状態は非表示 */
+    display: none; 
+}
+
+/* #auth-container: フォームを囲むボックス */
+#auth-container {
+    background: var(--color-paper); /* 白背景（不要だが明示的に指定） */
+    padding: 35px;
+    border-radius: 4px; /* 角丸を控えめに */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    max-width: 90%; 
+    width: 380px; 
+    text-align: left; 
+    
+    /* 認証画面の必須要素として、境界線をシンプルに追加 */
+    border: 1px solid var(--color-border);
+}
+
+#auth-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    color: var(--color-text);
+    text-align: center;
+}
+
+/* 認証画面内の注意書きやラベル */
+#auth-container p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+#auth-input-1, #auth-input-2 {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#auth-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: var(--color-link);
+    color: var(--color-paper);
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#auth-container button:hover {
+    background-color: #0d4a99;
+}
+
 /* ------------------------- フッター ------------------------- */
 footer {
+    position: fixed;
+    width: 100%;
     margin-top: 40px;
     padding: 20px 10px;
     text-align: center;
@@ -115,6 +387,7 @@ footer {
     color: #888;
     border-top: 1px solid var(--color-border);
     background-color: var(--color-paper);
+    z-index: 1000;
 }
 footer p {
     margin: 5px 0;

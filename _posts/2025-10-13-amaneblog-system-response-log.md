@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[システムログ] 記録処理結果の報告"
+title: "コメントありがとうございます"
 date: 2025-10-13 10:00:00 +0900
 blog: amaneblog
 category: private

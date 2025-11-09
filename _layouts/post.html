@@ -170,12 +170,11 @@ layout: default
         showNotification("コメントを送信しました。");
 
         if (!localStorage.getItem(TRIGGER_DATE_KEY)) {
-            // YYYY年MM月DD日 形式で日付を生成
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
-            const dateToSave = `${year}年${month}月${day}日`;
+            const dateToSave = `${year}-${month}-${day}`;
             
             localStorage.setItem(TRIGGER_DATE_KEY, dateToSave);
         }

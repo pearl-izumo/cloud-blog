@@ -8,4 +8,10 @@ list_type: public
 permalink: /amaneblog/public/
 ---
 
-{% include list_posts.html %}
+<h2>
+  <a href="{{ site.baseurl}}/amaneblog/" style="color: var(--color-meta)">雨の中のひとりごと</a>
+</h2>
+
+<div id="posts-list-container">
+    {% include list_posts.html %}
+</div>
