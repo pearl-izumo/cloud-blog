@@ -19,6 +19,7 @@ body {
 }
 /* ------------------------- ヘッダー ------------------------- */
 header {
+    width: 100%;
     background-color: var(--color-paper);
     border-bottom: 1px solid var(--color-border);
     padding: 15px 10px;
@@ -210,7 +211,7 @@ header {
 /* 見出しのスタイル */
 .post-content h1, .post-content h2, .post-content h3 {
     color: var(--color-text);
-    margin-top: 1.5em;
+    margin-top: 2.5em;
     margin-bottom: 0.5em;
     padding-bottom: 3px;
 }
@@ -234,11 +235,17 @@ header {
     color: #666;
 }
 
+.post-content p {
+    line-height: 1.7; /* 🎯 修正点: 行間を調整 */
+    margin-bottom: 1.5em; /* 段落ごとの間隔 */
+}
+
 /* リンク付き記事タイトルのデザイン（_layouts/post.html内） */
 article h1 {
-    font-size: 2.2rem;
-    margin-top: 10px;
+    font-size: 1.5rem;
+    margin-top: 40px;
     margin-bottom: 10px;
+    padding-top: 20px;
     line-height: 1.3;
 }
 article p {
@@ -256,51 +263,123 @@ article > p:first-of-type {
 
 /* ------------------------- コメント/トリガーエリア ------------------------- */
 
-/* コメントフォームとテキストエリアの基本デザイン */
-#comment-area, #timer-area {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid var(--color-border);
+/* コメントリスト全体の見出し */
+#comment-section h2{
+    font-size: 1.2rem;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    color: var(--color-text);
+    border-bottom: 1px dashed #ccc; /* フォームとの区切り線 */
+    padding-bottom: 10px;
 }
-#comment-area textarea {
-    width: 100%;
-    min-height: 120px;
+
+/* コメントフォームとテキストエリアの基本デザイン */
+#comment-form-container {
+    background-color: #fcfcfc; 
+    border: 1px solid #e0e0e0;
     padding: 10px;
+    margin-bottom: 0px; /* 投稿フォームと下のコンテンツとの間隔 */
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+}
+#comment-text {
+    width: 100%; /* 98%から100%に変更推奨 */
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 5px; /* 下部余白 */
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-family: var(--font-family);
+    font-family: inherit; /* 本文とフォントを合わせる */
     font-size: 16px;
-    resize: vertical; /* 縦方向のみリサイズ可能 */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    resize: vertical;
+    box-sizing: border-box; /* パディングを含めて幅100%に収める */
 }
 
 /* コメント送信ボタンのスタイル */
-#comment-area button {
+#comment-submit-button {
+    width: auto; /* ボタンの幅をコンテンツに合わせる */
+    display: inline-block;
     background-color: var(--color-link);
     color: var(--color-paper);
     border: none;
-    padding: 10px 20px;
+    padding: 10px 20px; /* サイズを調整 */
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 0px; /* テキストエリアからの上余白 */
     transition: background-color 0.2s;
 }
-#comment-area button:hover {
+#comment-submit-button:hover {
     background-color: #0d4a99;
 }
-
-/* タイマー/ステータスの表示エリア */
-#timer-area {
-    background-color: #f0f0f0; /* タイマー背景も薄いグレーで統一 */
-    padding: 15px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-    color: var(--color-text);
+.button-container {
+    text-align: right;
 }
 
+.comment-status-message {
+    color: var(--color-link);
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: right; /* ボタンの横に表示する場合 */
+}
+
+.comment-meta { 
+    font-size: 0.85em;
+    color: #777;
+    margin-bottom: 10px !important;
+    font-weight: bold;
+    padding-bottom: 0px;
+    line-height: 1.0; 
+    letter-spacing: 0.02em;
+    margin-top: 5px; 
+}
+
+/* ------------------------- 記事下のリンクエリア ------------------------- */
+
+.return-links-area {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    padding-top: 15px;
+    text-align: center; /* リンクを中央に配置 */
+}
+
+.return-link {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color-link); /* リンク色で強調 */
+    padding: 8px 15px;
+    border: 1px solid var(--color-link);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.return-link:hover {
+    background-color: var(--color-link);
+    color: var(--color-paper);
+}
+
+
 /* ------------------------- 認証エリア (ログイン画面風) ------------------------- */
+
+body.is-locked .main-container {
+    display: none !important;
+}
+body.is-locked footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 2000 !important; /* 最前面（オーバーレイより上） */
+    margin-top: 0 !important;
+    border-top: 1px solid var(--color-border); /* 境界線は維持 */
+    background-color: var(--color-paper); /* 背景色を確保 */
+}
+body.is-locked #auth-overlay {
+    z-index: 1500; /* ヘッダー・フッター(2000)より下、背景より上 */
+    background-color: var(--color-bg); /* 背景色で埋める */
+}
 
 /* #auth-overlay: メインコンテナ内のみを覆うように変更 */
 #auth-overlay {
@@ -376,18 +455,50 @@ article > p:first-of-type {
     background-color: #0d4a99;
 }
 
+/* ------------------------- 通知 ------------------------- */
+/* 通知コンテナの基本スタイル */
+#notification-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* 個別通知のスタイル */
+.toast-notification {
+    background-color: var(--color-link);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    transform: translateY(-100%); 
+    transition: transform 0.5s ease-in-out; 
+    
+    margin: 0 auto;
+    max-width: 400px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/* 表示時のスタイル */
+.toast-notification.show {
+    transform: translateY(0);
+}
+
+
 /* ------------------------- フッター ------------------------- */
 footer {
-    position: fixed;
     width: 100%;
-    margin-top: 40px;
+    margin-top: 40px; 
     padding: 20px 10px;
     text-align: center;
     font-size: 0.85rem;
     color: #888;
     border-top: 1px solid var(--color-border);
     background-color: var(--color-paper);
-    z-index: 1000;
 }
 footer p {
     margin: 5px 0;

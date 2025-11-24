@@ -32,85 +32,45 @@
     
 
     <div class="post-content">
-        <h3 id="処理結果概要">処理結果概要</h3>
+        <p>　名も知らぬONCEのどなたか、コメントありがとうございます。</p>
 
-<p>プレイヤー <strong>プレイヤー</strong> によってトリガーされた非同期処理が完了しました。</p>
+<p>　「<span id="quoted-comment-content">読み込み中…</span>」か、なるほど。<br />
+　自分から訊いてみたものの、他人の想いに安易に「分かる」と共感してしまうのも違う気がしてきた。<br />
+　ONCEの数だけ、TWICEとの人生があると思うので。</p>
 
-<p><strong>[ 処理ログ詳細 ]</strong></p>
-
-<hr />
-
-<p><strong>[ プレイヤーが入力した記録 (コメント) ]</strong></p>
-
-<div style="border: 2px solid #333; padding: 15px; margin: 15px 0; background: #eee;">
-    <p>引用コメント: <span id="quoted-comment-content" style="font-weight: bold; color: #b00;">読み込み中...</span></p>
-</div>
+<p>　返事と共感に代えて、あの秋の日に、下書きに残していた私の想いを公開させていただこうと思う。</p>
 
 <hr />
-
-<p><strong>[ 次のステップへのヒント ]</strong></p>
-
-<p>現在、新たなアクセスコードがシステムに一時的に生成されました。以下のパスワードを使用して、別の非公開エリアにアクセスしてください。</p>
-
-<p>アクセスコード: <code class="language-plaintext highlighter-rouge">CLOUD-CODE-789</code>
-エリア名: <code class="language-plaintext highlighter-rouge">/amaneblog/classified/</code></p>
-
-<hr />
-
-<p style="text-align: right; color: #888;">システム管理者</p>
 
     </div>
 
-    <hr style="margin-top: 40px;">
+    <!-- <hr style="margin-top: 40px;"> -->
     
     <section id="comment-section">
-        <h2>:: コメント / 記録 ::</h2>
+        <h2>コメント</h2>
+
         
+
         <div id="comment-form-area">
             <p>システムを読み込み中...</p>
         </div>
         
         <div id="comment-history-area">
-            <p style="color: #666;">（現時点で書き込まれた記録はありません。）</p>
+            <p style="color: #666;"></p>
         </div>
 
     </section>
 
-    <style>
-        /* 通知コンテナの基本スタイル */
-        #notification-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000; /* 他の要素の上に表示 */
-            pointer-events: none; /* クリックを透過させる */
-        }
-    
-        /* 個別通知のスタイル */
-        .toast-notification {
-            background-color: #4CAF50; /* 緑色の背景 */
-            color: white;
-            text-align: center;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            
-            /* 画面外に隠すための初期位置 */
-            transform: translateY(-100%); 
-            transition: transform 0.5s ease-in-out; /* アニメーションの設定 */
-            
-            /* 中央寄せのための設定 */
-            margin: 0 auto;
-            max-width: 400px;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-    
-        /* 表示時のスタイル */
-        .toast-notification.show {
-            transform: translateY(0); /* 画面内にスライドイン */
-        }
-    </style>
+    <div class="return-links-area">
+        
+        
+        
+        
+
+        
+            <a href="/amaneblog/private/index.html" class="return-link">非公開記事一覧に戻る &raquo;</a>
+        
+    </div>
 
 </article>
 
@@ -147,7 +107,7 @@
         
         // 1. トリガーが無効な記事ではフォームを表示しない
         if (!ENABLE_COMMENT_TRIGGER) {
-            formArea.innerHTML = '<p style="color: #888;">（この記録はシステムによるロックアップ中です。）</p>';
+            formArea.innerHTML = '<p style="color: #888; text-align:center;">この記事では現在コメントを受け付けていません。</p>';
             return;
         }
 
@@ -166,14 +126,20 @@
         } else {
             // 4. 初期状態: フォームをレンダリング
             const formHtml = `
-                <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
-                    <p><strong>[ 投稿者: ${CURRENT_PLAYER_ID} ]</strong></p>
-                    <form id="comment-form" onsubmit="handleCommentSubmit(event)">
-                        <textarea id="comment-text" name="comment" rows="4" placeholder="記録を書き込む..." style="width: 98%; padding: 5px; margin-bottom: 10px;"></textarea>
-                        <button type="submit" style="padding: 8px 15px;">記録を送信</button>
-                        <p id="comment-message" style="color: green; margin-top: 10px; display: none;"></p>
-                    </form>
-                </div>
+            <div id="comment-form-container" class="comment-entry-box"> 
+        
+                <p class="comment-meta"><strong>[ 投稿者: 匿名ユーザー]</strong></p>
+                
+                <form id="comment-form" onsubmit="handleCommentSubmit(event)">
+                    
+                    <textarea id="comment-text" name="comment" rows="3" placeholder="コメントを記入（50文字以内）" maxlength="50"></textarea>
+                    <div class="button-container">
+                        <button type="submit" id="comment-submit-button">コメントを送信</button>
+                        
+                        <p id="comment-message" class="comment-status-message" style="display: none; text-align: center;"></p>
+                    </div>
+                </form>
+            </div>
             `;
             formArea.innerHTML = formHtml;
         }
@@ -190,7 +156,7 @@
         const messageElement = document.getElementById('comment-message');
         
         if (commentText.length === 0) {
-            messageElement.textContent = "記録内容が空です。";
+            messageElement.textContent = "コメントが記入されていません。";
             messageElement.style.color = 'red';
             messageElement.style.display = 'block';
             return;
@@ -218,7 +184,7 @@
         
         // 3. プレイヤーへのフィードバックとリロード
         messageElement.textContent = "";
-        messageElement.style.color = 'green';
+        // messageElement.style.color = 'green';
         messageElement.style.display = 'block';
         
         // ページの表示を更新し、PENDING状態のタイマーを表示させる
@@ -293,6 +259,7 @@
     function renderCommentHistory() {
         const historyContainer = document.getElementById('comment-history-area');
         const savedHistory = localStorage.getItem(COMMENT_CONTENT_KEY);
+        const commentDateKey = `trigger_date_${BLOG_PATH}_${CURRENT_POST_SLUG}`;
 
         // 履歴が保存されていなければ何もしない
         if (!historyContainer || !savedHistory) {
@@ -301,10 +268,10 @@
         
         // 履歴HTMLを生成
         const historyHtml = `
-            <div style="margin-top: 20px; padding: 10px; border-top: 1px solid #ddd;">
-                <p style="font-weight: bold; margin-bottom: 5px;">--- 記録履歴 ---</p>
+            <div style="margin-top: 20px; padding: 10px;">
                 <div style="border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 10px;">
-                    <p style="margin: 0;"><strong>[${CURRENT_PLAYER_ID}] </strong>${new Date().toLocaleString()}</p>
+                    <p style="margin: 0;"><strong>1:匿名ユーザー</strong>
+                    <p style="margin: 0;">投稿日：${localStorage.getItem(commentDateKey)}</p>
                     <p style="white-space: pre-wrap; margin: 5px 0 0 0;">${savedHistory}</p>
                 </div>
             </div>
@@ -464,6 +431,7 @@
 
         // 2. 汎用パスワード認証ロジック (2段階認証)
         function authenticate() {
+            document.body.classList.add('is-locked');
             // フォームのHTMLを定義
             const formHtml = `
                 <div id="auth-overlay" style="display: flex;">
@@ -516,9 +484,11 @@
 
             if (input1 === decodedPassword1 && input2 === decodedPassword2) {
                 // 認証成功
+                document.body.classList.remove('is-locked');
                 localStorage.setItem(AUTH_FLAG_KEY, 'true');
                 const overlay = document.getElementById('auth-overlay');
                 if (overlay) { overlay.remove(); }
+                
                 
                 window.location.href = window.location.href; 
             } else {

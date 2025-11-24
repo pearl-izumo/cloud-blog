@@ -14,29 +14,12 @@ list_type: private
 quote_source_slug: trigger-test
 ---
 
-### 処理結果概要
+　名も知らぬONCEのどなたか、コメントありがとうございます。
 
-プレイヤー **{{ site.private_player_name | default: 'プレイヤー' }}** によってトリガーされた非同期処理が完了しました。
+　「<span id="quoted-comment-content">読み込み中...</span>」か、なるほど。<br>
+　自分から訊いてみたものの、他人の想いに安易に「分かる」と共感してしまうのも違う気がしてきた。<br>
+　ONCEの数だけ、TWICEとの人生があると思うので。
 
-**[ 処理ログ詳細 ]**
-
----
-
-**[ プレイヤーが入力した記録 (コメント) ]**
-
-<div style="border: 2px solid #333; padding: 15px; margin: 15px 0; background: #eee;">
-    <p>引用コメント: <span id="quoted-comment-content" style="font-weight: bold; color: #b00;">読み込み中...</span></p>
-</div>
+　返事と共感に代えて、あの秋の日に、下書きに残していた私の想いを公開させていただこうと思う。
 
 ---
-
-**[ 次のステップへのヒント ]**
-
-現在、新たなアクセスコードがシステムに一時的に生成されました。以下のパスワードを使用して、別の非公開エリアにアクセスしてください。
-
-アクセスコード: `CLOUD-CODE-789`
-エリア名: `/amaneblog/classified/`
-
-<hr>
-
-<p style="text-align: right; color: #888;">システム管理者</p>

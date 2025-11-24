@@ -260,6 +260,7 @@
 
         // 2. 汎用パスワード認証ロジック (2段階認証)
         function authenticate() {
+            document.body.classList.add('is-locked');
             // フォームのHTMLを定義
             const formHtml = `
                 <div id="auth-overlay" style="display: flex;">
@@ -312,9 +313,11 @@
 
             if (input1 === decodedPassword1 && input2 === decodedPassword2) {
                 // 認証成功
+                document.body.classList.remove('is-locked');
                 localStorage.setItem(AUTH_FLAG_KEY, 'true');
                 const overlay = document.getElementById('auth-overlay');
                 if (overlay) { overlay.remove(); }
+                
                 
                 window.location.href = window.location.href; 
             } else {
