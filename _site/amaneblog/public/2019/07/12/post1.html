@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公開テスト記事 - はじめまして</title>
+    <title>ひとりごと始めました</title>
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
     <div class="main-container">
         <article>
     <div id="notification-container"></div>
-    <h1>公開テスト記事 - はじめまして</h1>
+    <h1>ひとりごと始めました</h1>
 
     
 
@@ -28,13 +28,16 @@
     
 
     
-        <p>投稿日: 2025年10月10日</p>
+        <p>投稿日: 2019年07月12日</p>
     
 
     <div class="post-content">
-        <p>これはアマネの公開記事のテストです。</p>
-
-<p>この記事は、/amaneblog/public/hello-world.html というパスでアクセス可能になります。</p>
+        <p>　ONCEとしての私が感じたことを、今日からときどきここに残してみることにした。<br />
+<br />
+　誰かに向けて書くつもりはない。 <br />
+　ただ、どうしても言葉にしておきたくなるような、そういう強い思いを今この瞬間も感じている。<br />
+<br />
+　この場所が、私の「ひとりごと」の居場所になればいいと思う。</p>
 
     </div>
 
@@ -43,32 +46,6 @@
     <section id="comment-section">
         <h2>コメント</h2>
 
-        
-            <div id="npc-comments-list">
-                
-                <div style="margin-top: 0px; padding: 10px;">
-                    <div style="border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 10px;">
-                        
-                        <p style="margin: 0;"><strong>1:匿名ユーザー</strong></p>
-                        
-                        <p style="margin: 0;">投稿日：2025-09-27</p>
-                        
-                        <p style="white-space: pre-wrap; margin: 5px 0 0 0;">この信号パターン、3年前の「あの事件」と酷似している。<br>偶然とは思えない。</p>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 0px; padding: 10px;">
-                    <div style="border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 10px;">
-                        
-                        <p style="margin: 0;"><strong>2:Unknown</strong></p>
-                        
-                        <p style="margin: 0;">投稿日：2025-10-01</p>
-                        
-                        <p style="white-space: pre-wrap; margin: 5px 0 0 0;">深入りするな。警告はしたぞ。</p>
-                    </div>
-                </div>
-                
-            </div>
         
 
         <div id="comment-form-area">
@@ -98,7 +75,7 @@
     //const CURRENT_BLOG_PATH = "";
     const BLOG_PATH = "amaneblog"; // 安全のためデフォルト値を再設定
     const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
-    const CURRENT_POST_SLUG = "amaneblog-hello-world";
+    const CURRENT_POST_SLUG = "amaneblog-20190712";
     const ENABLE_COMMENT_TRIGGER = "false" === 'true';
 
     const QUOTE_SLUG = "";
@@ -470,7 +447,7 @@
                         
                         <p id="auth-message" style="display: none;">回答が間違っています。</p>
                         
-                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/${CURRENT_BLOG_PATH}" style="color: #666;">[ ブログ入口に戻る ]</a></p>
+                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/${CURRENT_BLOG_PATH}" style="color: var(--color-link);"> << ブログTOP</a></p>
                     </div>
                 </div>
             `;

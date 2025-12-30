@@ -55,24 +55,10 @@
             
 
             
-            
-        
-            
-            
-            
-
-            
-            
-
-            
-            
-            
-
-            
             <li>
-                <small>2025-10-12</small>
+                <small>2025-10-25</small>
                 <a href="/amaneblog/private/2025/10/12/trigger-test">
-                    コメントトリガー記事 - 独白
+                    この記事を読んでいるあなたへ
                 </a>
             </li>
             
@@ -127,6 +113,55 @@
             
             
         
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+            
+        
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+            <li>
+                <small>2019-09-23</small>
+                <a href="/amaneblog/private/2019/09/23/post1">
+                    日記
+                </a>
+            </li>
+            
+            
+        
+            
+            
+            
+
+            
+            
+
+            
+            
+            
+
+            
+            
+        
     </ul>
     
 </div>
@@ -147,7 +182,7 @@
     
     // 🔑 隠し記事の情報を定義 (Liquid変数とは異なるJS変数として定義)
     const HIDDEN_POST_SLUG = "system-response-log";
-    const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/2025/10/13/system-response-log'
+    const HIDDEN_POST_URL = LIST_BASE_URL + '/amaneblog/private/latest-post/'
     const HIDDEN_POST_TITLE = "コメントありがとうございます";
 
     // 表示用の日付を動的に設定
@@ -294,7 +329,7 @@
                         
                         <p id="auth-message" style="display: none;">回答が間違っています。</p>
                         
-                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/${CURRENT_BLOG_PATH}" style="color: #666;">[ ブログ入口に戻る ]</a></p>
+                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/${CURRENT_BLOG_PATH}" style="color: var(--color-link);"> << ブログTOP</a></p>
                     </div>
                 </div>
             `;

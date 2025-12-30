@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>コメントありがとうございます</title>
+    <title>日記</title>
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
     <div class="main-container">
         <article>
     <div id="notification-container"></div>
-    <h1>コメントありがとうございます</h1>
+    <h1>日記</h1>
 
     
 
@@ -28,19 +28,28 @@
     
 
     
-        <p>投稿日: <span id="dynamic-post-date">（記録処理中...）</span></p>
+        <p>投稿日: 2019年09月23日</p>
     
 
     <div class="post-content">
-        <p>　名も知らぬONCEのどなたか、コメントありがとうございます。</p>
-
-<p>　「<span id="quoted-comment-content">読み込み中…</span>」か、なるほど。<br />
-　自分から訊いてみたものの、他人の想いに安易に「分かる」と共感してしまうのも違う気がしてきた。<br />
-　ONCEの数だけ、TWICEとの人生があると思うので。</p>
-
-<p>　返事と共感に代えて、あの秋の日に、下書きに残していた私の想いを公開させていただこうと思う。</p>
-
-<hr />
+        <p>　18時にはコーヒーを淹れ終わった状態でパソコンの前に座っていたかったから、図書館での祝日バイトを早上がりした。<br />
+<br />
+　職員の方にその旨を伝えたところ、それを隣で聞いていた、話したことのない学生から「もしかして、”Feel Special”ですか……？」と尋ねられて驚いた。<br />
+　そういえば、今日はミブリーが付いているほうのバッグで来てしまったな、と思いながら「ええ、まあ」と答えた。<br />
+<br />
+　私には「大学生」ができない。<br />
+　もしかしたら趣味が合うのかもしれない誰かとの、せっかくの会話もこれくらいしかできない。<br />
+　この先どうやって生きていけばいいのかもよくわからない。<br />
+<br />
+　そうやって自分をまた嫌いになりながら聴いた”Feel Special”。<br />
+　救われた、と思った。<br />
+<br />
+　とにかく言葉で表すには大きすぎる感情を抱いている。<br />
+　こうやって逃げてしまう書き方もずるいなと思うけれど、かと言って、今は上手に表せない。<br />
+　ミナちゃんがそこにいてくれる喜びだけで溢れるかと思っていたのに、それを呑み込むくらい、自分ごととして歌詞が飛び込んできた。<br />
+<br />
+　霧が晴れたわけでも、将来が明るくなったわけでもない。<br />
+　でも、こんな私の存在を、肯定してくれてありがとう。</p>
 
     </div>
 
@@ -75,13 +84,13 @@
 </article>
 
 <script>
-    //const CURRENT_BLOG_PATH = "amaneblog";
+    //const CURRENT_BLOG_PATH = "";
     const BLOG_PATH = "amaneblog"; // 安全のためデフォルト値を再設定
     const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
-    const CURRENT_POST_SLUG = "system-response-log";
+    const CURRENT_POST_SLUG = "amaneblog-20190923";
     const ENABLE_COMMENT_TRIGGER = "false" === 'true';
 
-    const QUOTE_SLUG = "trigger-test";
+    const QUOTE_SLUG = "";
     const QUOTED_COMMENT_KEY = `comment_content_${BLOG_PATH}_${QUOTE_SLUG}`;
 
     // キーにブログIDとスラッグを含めることで、記事ごとに状態を分離
@@ -450,7 +459,7 @@
                         
                         <p id="auth-message" style="display: none;">回答が間違っています。</p>
                         
-                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/${CURRENT_BLOG_PATH}" style="color: #666;">[ ブログ入口に戻る ]</a></p>
+                        <p style="margin-top: 20px; text-align: center;"><a href="${BASE_URL}/${CURRENT_BLOG_PATH}" style="color: var(--color-link);"> << ブログTOP</a></p>
                     </div>
                 </div>
             `;
