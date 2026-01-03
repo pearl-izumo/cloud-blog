@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心書き換わるひととき</title>
+    <title>この記事を読んでいるあなたへ</title>
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
     <div class="main-container">
         <article>
     <div id="notification-container"></div>
-    <h1>心書き換わるひととき</h1>
+    <h1>この記事を読んでいるあなたへ</h1>
 
     
 
@@ -28,27 +28,23 @@
     
 
     
-        <p>投稿日: 2025年09月23日</p>
+        <p>投稿日: 2025年10月25日</p>
     
 
     <div class="post-content">
-        <p>　我らがイムナヨンさん、お誕生日おめでとうございます……！</p>
+        <p>　9月。東京ドーム公演に参戦した。<br />
+　もともと行くつもりだった初日だけでなく、素敵な巡り合わせで、2日間。<br />
+<br />
+　10月。ドキュメンタリー映画を観に行った。<br />
+　映画館でも、帰り道でも、家に帰ってからも、たくさんのことを考えた。<br />
+<br />
+<br />
+　そして今。私は、TWICEとの向き合い方にもう一度悩んでいる。<br />
+<br />
+　だから、この記事にアクセスできるくらい、TWICEと、それから私のことを知っているONCEがもしいるなら、コメントで教えてほしい。<br />
+<br />
+　<strong>あなたにとって、TWICEとは何ですか？</strong></p>
 
-<p>　ということで、生誕イベントをやっているという「<a href="https://renamedroomcafe.wixsite.com/renamed-room">RENAMED ROOM</a>」というカフェに行ってみることにした。<br />
-　これからはこういうイベントの話も、自らの人生の記録として残してみるのもいいかな、と思う。<br />
- <br />
-　店内は完全にナヨン仕様。<br />
-　限定メニューも “POP!” にかけたスパークリングドリンクで、まだ暑さ冷めやらぬ夏の終わりにぴったりの爽やかさだった。</p>
-
-<p>　随所に「わかっている人のこだわり」が感じられて、なんとなくではなく、お店の方々がちゃんと愛を持ったうえで企画を運営されているのだということが何より嬉しかった。<br />
-　むしろ、カフェにしてはTWICEに愛が偏りすぎていると言ってもいいくらい。</p>
-
-<p>　たまにはこうして、他のONCEの想いに囲まれてみるのも良いな、と思えるひとときだった。<br />
-　<br />
-　みなさんも、誰かの誕生日にぜひ足を運んでみてください。<br />
-<br /></p>
-
-<p>　#RENAMEDROOM　#ブログキャンペーン</p>
 
     </div>
 
@@ -57,21 +53,6 @@
     <section id="comment-section">
         <h2>コメント</h2>
 
-        
-            <div id="npc-comments-list">
-                
-                <div style="margin-top: 0px; padding: 10px;">
-                    <div style="border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 10px;">
-                        
-                        <p style="margin: 0;"><strong>1: RENAMED ROOM</strong></p>
-                        
-                        <p style="margin: 0;">投稿日：2025-09-24</p>
-                        
-                        <p style="white-space: pre-wrap; margin: 5px 0 0 0;">こんにちは、RENAMED ROOMスタッフです！<br>とても素敵なブログ記事を書いてくださり、誠にありがとうございます。<br>公式サイト「MEMBERS」内の「バースデー企画特集」にて、紹介させていただきます。<br>また、ブログキャンペーンの特典も同ページから受け取れますので、来店時に決めていただいた「合言葉」を入力して、ぜひご確認ください。<br>またのご来店をお待ちしております！</p>
-                    </div>
-                </div>
-                
-            </div>
         
 
         <div id="comment-form-area">
@@ -91,7 +72,7 @@
         
 
         
-            <a href="/amaneblog/public/index.html" class="return-link">公開記事一覧に戻る &raquo;</a>
+            <a href="/amaneblog/private/index.html" class="return-link">非公開記事一覧に戻る &raquo;</a>
         
     </div>
 
@@ -101,8 +82,8 @@
     //const CURRENT_BLOG_PATH = "";
     const BLOG_PATH = "amaneblog"; // 安全のためデフォルト値を再設定
     const CURRENT_PLAYER_ID = localStorage.getItem('arg_player_id') || 'unknown';
-    const CURRENT_POST_SLUG = "amaneblog-20250923";
-    const ENABLE_COMMENT_TRIGGER = "false" === 'true';
+    const CURRENT_POST_SLUG = "trigger-test";
+    const ENABLE_COMMENT_TRIGGER = "true" === 'true';
 
     const QUOTE_SLUG = "";
     const QUOTED_COMMENT_KEY = `comment_content_${BLOG_PATH}_${QUOTE_SLUG}`;
